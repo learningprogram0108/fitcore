@@ -116,16 +116,20 @@ class _WeekBlock extends StatelessWidget {
       ),
       child: Column(children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(10, 5, 10, 4),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.fromLTRB(8, 5, 8, 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(label, style: TextStyle(
-                fontSize: 9, fontWeight: FontWeight.w700,
-                color: isDeload ? AppTheme.accentWarm :
-                       isActive ? AppTheme.accent : AppTheme.textSecond,
-              )),
-              Text(subtitle, style: const TextStyle(fontSize: 8, color: AppTheme.textDisabled)),
+              Text(label,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 9, fontWeight: FontWeight.w700,
+                  color: isDeload ? AppTheme.accentWarm :
+                         isActive ? AppTheme.accent : AppTheme.textSecond,
+                )),
+              Text(subtitle,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 8, color: AppTheme.textDisabled)),
             ],
           ),
         ),
