@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../app/theme/app_theme.dart';
+import '../../../core/database/app_database.dart';
+import '../../../core/services/google_drive_service.dart';
+import '../domain/csv_export_service.dart';
 import '../domain/one_rm_calculator.dart';
 import 'widgets/exercise_card.dart';
 
@@ -131,12 +134,110 @@ class _TrainingLogPageState extends ConsumerState<TrainingLogPage> {
     ],
   );
 
+  // ── 導出 CSV + Google Drive ────────────────────────────
+  Future<void> _exportCsv() async {
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final db = ref.read(appDatabaseProvider);
+      final csv = await CsvExportService.buildCsv(db);
+      final file = await CsvExportService.saveLocally(csv);
+
+      if (!mounted) return;
+
+      messenger.showSnackBar(SnackBar(
+        content: Text('CSV 已儲存：${file.path}'),
+        duration: const Duration(seconds: 4),
+      ));
+
+      // 詢問是否上傳 Google Drive
+      final uploadToGdrive = await showDialog<bool>(
+        context: context,
+        builder: (_) => AlertDialog(
+          backgroundColor: const Color(0xFF181818),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          title: const Text('上傳至 Google Drive？'),
+          content: const Text(
+            '將 CSV 上傳至 Google Drive 的 FitCore 資料夾',
+            style: TextStyle(color: AppTheme.textSecond),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context, rootNavigator: true).pop(false),
+              child: const Text('僅本地儲存'),
+            ),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: AppTheme.accent,
+                foregroundColor: Colors.black,
+              ),
+              onPressed: () => Navigator.of(context, rootNavigator: true).pop(true),
+              child: const Text('上傳 Drive'),
+            ),
+          ],
+        ),
+      );
+
+      if (uploadToGdrive != true || !mounted) return;
+
+      final drive = ref.read(googleDriveServiceProvider);
+      if (!drive.isSignedIn) {
+        final ok = await drive.signIn();
+        if (!ok) {
+          if (mounted) {
+            messenger.showSnackBar(
+              const SnackBar(content: Text('Google 登入失敗')),
+            );
+          }
+          return;
+        }
+      }
+
+      final url = await drive.uploadCsv(
+        fileName: file.uri.pathSegments.last,
+        csvContent: csv,
+      );
+
+      if (mounted) {
+        messenger.showSnackBar(SnackBar(
+          content: Text(url != null
+              ? '已上傳至 Google Drive ✓'
+              : '上傳失敗，請稍後再試'),
+          backgroundColor: url != null
+              ? const Color(0xFF2A4A10)
+              : null,
+        ));
+      }
+    } catch (e) {
+      if (mounted) {
+        messenger.showSnackBar(
+          SnackBar(content: Text('導出失敗：$e')),
+        );
+      }
+    }
+  }
+
   // ── 右側面板（圖表 + 統計）───────────────────────────
   Widget _rightPanel() => SingleChildScrollView(
     padding: const EdgeInsets.all(14),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // ── 導出 CSV 按鈕 ──
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF1E2A10),
+              foregroundColor: AppTheme.accent,
+              side: const BorderSide(color: AppTheme.accent, width: 1),
+            ),
+            icon: const Icon(Icons.upload_file, size: 16),
+            label: const Text('導出訓練日誌 CSV',
+                style: TextStyle(fontWeight: FontWeight.w700)),
+            onPressed: _exportCsv,
+          ),
+        ),
+        const SizedBox(height: 14),
         const Text('訓練總量', style: TextStyle(fontSize: 9,
           fontWeight: FontWeight.w700, letterSpacing: 1.5, color: AppTheme.textSecond)),
         const SizedBox(height: 10),

@@ -4,18 +4,20 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/training_log/presentation/training_log_page.dart';
 import '../../features/program/presentation/program_page.dart';
+import '../../features/program/presentation/exercise_detail_page.dart';
 import '../../features/nutrition/presentation/nutrition_page.dart';
 import '../../features/ai_coach/presentation/ai_coach_page.dart';
 import '../../features/knowledge_base/presentation/knowledge_base_page.dart';
 
 // ── 路由路徑常數 ──────────────────────────────────────────
 abstract class AppRoutes {
-  static const log         = '/log';
-  static const program     = '/program';
-  static const nutrition   = '/nutrition';
-  static const aiCoach     = '/ai-coach';
-  static const knowledge   = '/knowledge';
-  static const knowledgeEx = '/knowledge/:exerciseId';
+  static const log            = '/log';
+  static const program        = '/program';
+  static const programExercise = '/program/exercise/:movementId';
+  static const nutrition      = '/nutrition';
+  static const aiCoach        = '/ai-coach';
+  static const knowledge      = '/knowledge';
+  static const knowledgeEx    = '/knowledge/:exerciseId';
 }
 
 // ── Riverpod Provider ─────────────────────────────────────
@@ -33,6 +35,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppRoutes.program,
             pageBuilder: (c, s) => const NoTransitionPage(child: ProgramPage()),
+            routes: [
+              GoRoute(
+                path: 'exercise/:movementId',
+                builder: (c, s) => ExerciseDetailPage(
+                  movementId: s.pathParameters['movementId']!,
+                  extra: s.extra is ExerciseExtra
+                      ? s.extra as ExerciseExtra
+                      : null,
+                ),
+              ),
+            ],
           ),
           GoRoute(
             path: AppRoutes.nutrition,
