@@ -1,0 +1,61 @@
+name: fitcore
+description: 私人化健身 APP — 訓練日誌、課表管理、AI 教練、運動營養
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=3.4.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ── 狀態管理 ──────────────────────────────────────────
+  flutter_riverpod: ^2.6.1
+
+  # ── 本地資料庫（SQLite / Drift ORM）──────────────────
+  drift: ^2.20.3
+  sqlite3_flutter_libs: ^0.5.28
+  path_provider: ^2.1.4
+  path: ^1.9.0
+
+  # ── 雲端同步（Supabase）──────────────────────────────
+  supabase_flutter: ^2.8.4
+
+  # ── 導覽路由 ──────────────────────────────────────────
+  go_router: ^14.6.2
+
+  # ── 解剖圖（開源 SVG 肌群高亮）────────────────────────
+  flutter_body_atlas: ^0.1.4
+  bodychart_heatmap: ^1.1.0
+
+  # ── Google Gemini AI API ──────────────────────────────
+  google_generative_ai: ^0.4.6
+  http: ^1.2.2
+
+  # ── Markdown 渲染 ──────────────────────────────────────
+  flutter_markdown: ^0.7.4
+
+  # ── 圖表 ──────────────────────────────────────────────
+  fl_chart: ^0.69.0
+
+  # ── 工具 ──────────────────────────────────────────────
+  uuid: ^4.5.1
+  intl: ^0.19.0
+  shared_preferences: ^2.3.2
+  flutter_secure_storage: ^9.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+  # Drift ORM 程式碼生成（限制只處理 core/database/**，避免分析 flutter_body_atlas）
+  build_runner: ^2.4.13
+  drift_dev: ^2.20.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/knowledge/
+    - assets/images/

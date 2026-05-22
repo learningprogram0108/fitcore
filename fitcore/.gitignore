@@ -1,0 +1,28 @@
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+*.g.dart
+*.freezed.dart
+
+# 本地資料庫（不提交）
+*.db
+*.db-shm
+*.db-wal
+
+# 敏感金鑰（絕對不提交）
+.env
+*.key
+secrets.json
+*_secrets.dart
+
+# IDE
+.idea/
+.vscode/settings.json
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

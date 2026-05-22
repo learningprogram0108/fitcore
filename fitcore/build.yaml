@@ -1,0 +1,14 @@
+targets:
+  $default:
+    sources:
+      # 只讓 build_runner 處理核心資料庫檔案
+      # 排除引入 flutter_body_atlas（Dart 3.12 語法）的檔案
+      # 避免 analyzer 7.x 無法解析 dot-shorthand syntax 而崩潰
+      exclude:
+        - "lib/features/knowledge_base/**"
+        - "lib/features/ai_coach/**"
+        - "lib/features/training_log/**"
+        - "lib/features/program/**"
+        - "lib/features/nutrition/**"
+        - "lib/app/**"
+        - "lib/main.dart"

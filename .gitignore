@@ -1,0 +1,10 @@
+# Claude Code 工作階段（不需提交）
+.claude/
+
+# mockup 草稿（可選：若要提交請刪此行）
+mockup/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
