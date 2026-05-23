@@ -1,6 +1,8 @@
 // 動作知識庫 — 解剖聚焦、力學特徵、6 階段執行指南、核心提示詞
 // 資料來源：Day 1-4 Movement Bible
 
+import 'muscle_volume.dart';
+
 class MovementPhase {
   const MovementPhase({required this.title, required this.content});
   final String title;
@@ -15,6 +17,7 @@ class MovementData {
     required this.mechanics,
     required this.phases,
     required this.coreCues,
+    required this.muscleWeights,
   });
   final String id;
   final String name;
@@ -22,6 +25,7 @@ class MovementData {
   final String mechanics;
   final List<MovementPhase> phases;
   final List<String> coreCues;
+  final Map<MuscleGroup, double> muscleWeights;
 }
 
 class MovementLibrary {
@@ -69,6 +73,11 @@ class MovementLibrary {
         '「雙腳旋入地面」— 膝蓋不內扣',
         '「電梯垂直下降」— 維持中足重心',
       ],
+      muscleWeights: {
+        MuscleGroup.quads: 1.0,
+        MuscleGroup.posteriorChain: 1.0,
+        MuscleGroup.core: 0.5,
+      },
     ),
 
     'bulgarian': const MovementData(
@@ -108,6 +117,10 @@ class MovementLibrary {
         '「用前腳踩碎地板」— 單側四頭與臀肌驅動',
         '「骨盆嚴禁傾斜」— 臀中肌等長鎖定',
       ],
+      muscleWeights: {
+        MuscleGroup.quads: 1.0,
+        MuscleGroup.posteriorChain: 1.0,
+      },
     ),
 
     'farmers_walk': const MovementData(
@@ -146,6 +159,10 @@ class MovementLibrary {
         '「頭頂拉向天花板」— 脊椎中立延伸',
         '「鋼鐵鋁罐，微步前行」— 核心動態剛性',
       ],
+      muscleWeights: {
+        MuscleGroup.core: 0.5,
+        MuscleGroup.back: 0.5,
+      },
     ),
 
     'calf_raise': const MovementData(
@@ -185,6 +202,7 @@ class MovementLibrary {
         '「大拇趾球踩碎地面」— 力線對齊',
         '「頂峰死捏2秒」— 極致向心收縮',
       ],
+      muscleWeights: {},
     ),
 
     'copenhagen': const MovementData(
@@ -223,6 +241,9 @@ class MovementLibrary {
         '「骨盆頂向天花板」— 完整髖關節位移',
         '「身體拒絕彎曲」— 額狀面中線剛性',
       ],
+      muscleWeights: {
+        MuscleGroup.core: 0.5,
+      },
     ),
 
     // ─────────────────────── DAY 2 ───────────────────────
@@ -263,6 +284,11 @@ class MovementLibrary {
         '「用腳把地板往前推」— 啟動下肢驅動',
         '「推碎椅墊，肘部相對」— 穿過黏滯點',
       ],
+      muscleWeights: {
+        MuscleGroup.chest: 1.0,
+        MuscleGroup.frontDelt: 0.5,
+        MuscleGroup.triceps: 0.5,
+      },
     ),
 
     'pullup': const MovementData(
@@ -302,6 +328,11 @@ class MovementLibrary {
         '「手肘撞擊肋骨」— 用背主導',
         '「胸骨頂向單槓」— 完整背肌收縮',
       ],
+      muscleWeights: {
+        MuscleGroup.back: 1.0,
+        MuscleGroup.biceps: 0.5,
+        MuscleGroup.sideDelt: 0.5,
+      },
     ),
 
     'ohp': const MovementData(
@@ -341,6 +372,11 @@ class MovementLibrary {
         '「越過額頭，藏頭進窗」— 突破黏滯點',
         '「向天花板主動聳肩」— 頂端骨骼鎖定',
       ],
+      muscleWeights: {
+        MuscleGroup.frontDelt: 1.0,
+        MuscleGroup.triceps: 0.5,
+        MuscleGroup.sideDelt: 0.5,
+      },
     ),
 
     'face_pull': const MovementData(
@@ -380,6 +416,10 @@ class MovementLibrary {
         '「雙肘打寬，撕裂繩索」— 後三角與中背',
         '「手腕高於手肘，夾背2秒」— 外旋頂峰收縮',
       ],
+      muscleWeights: {
+        MuscleGroup.sideDelt: 1.0,
+        MuscleGroup.back: 0.5,
+      },
     ),
 
     'triceps_pushdown': const MovementData(
@@ -419,6 +459,9 @@ class MovementLibrary {
         '「繩子向兩側撕開，底部擠壓2秒」— 頂峰收縮',
         '「緩慢回放，對抗繩索」— 離心肌肥大',
       ],
+      muscleWeights: {
+        MuscleGroup.triceps: 1.0,
+      },
     ),
 
     // ─────────────────────── DAY 3 ───────────────────────
@@ -458,6 +501,12 @@ class MovementLibrary {
         '「用雙腿踩穿地板」— 下肢驅動起槓',
         '「撕裂地面，臀部前推」— 過膝強烈伸髖',
       ],
+      muscleWeights: {
+        MuscleGroup.quads: 1.0,
+        MuscleGroup.posteriorChain: 1.0,
+        MuscleGroup.back: 0.5,
+        MuscleGroup.core: 0.5,
+      },
     ),
 
     'zercher': const MovementData(
@@ -496,6 +545,11 @@ class MovementLibrary {
         '「用胸骨去撞天花板」— 挺胸主導推起',
         '「鋁罐剛性，屁股嚴禁先抬」— 防代償',
       ],
+      muscleWeights: {
+        MuscleGroup.quads: 1.0,
+        MuscleGroup.core: 1.0,
+        MuscleGroup.posteriorChain: 0.5,
+      },
     ),
 
     'nordic': const MovementData(
@@ -534,6 +588,9 @@ class MovementLibrary {
         '「用大腿後側死命抵抗地球」— 離心張力',
         '「輕微助推，後側咬緊拉回」— 屈膝主導向心',
       ],
+      muscleWeights: {
+        MuscleGroup.posteriorChain: 1.0,
+      },
     ),
 
     'rdl': const MovementData(
@@ -572,6 +629,9 @@ class MovementLibrary {
         '「把屁股往後方的牆壁推」— 單側髖鉸鏈',
         '「踩穿地板，屁股嚴禁翻開」— 臀中肌鎖死骨盆',
       ],
+      muscleWeights: {
+        MuscleGroup.posteriorChain: 1.0,
+      },
     ),
 
     'leg_curl': const MovementData(
@@ -610,6 +670,9 @@ class MovementLibrary {
         '「腳跟往屁股深處摳」— 膝屈發力軌跡',
         '「緩慢回放，拉長後側」— 離心肌肥大',
       ],
+      muscleWeights: {
+        MuscleGroup.posteriorChain: 1.0,
+      },
     ),
 
     // ─────────────────────── DAY 4 ───────────────────────
@@ -649,6 +712,11 @@ class MovementLibrary {
         '「手肘向後撞擊地面」— 用背主導',
         '「胸口貼槓，夾緊肩胛骨」— 中背厚度',
       ],
+      muscleWeights: {
+        MuscleGroup.back: 1.0,
+        MuscleGroup.sideDelt: 0.5,
+        MuscleGroup.biceps: 0.5,
+      },
     ),
 
     'incline_press': const MovementData(
@@ -687,6 +755,11 @@ class MovementLibrary {
         '「肘關節呈45度自然下放」— 杜絕肩峰夾擠',
         '「前臂垂直，用雙肘內側夾緊胸肌」— 突破黏滯點',
       ],
+      muscleWeights: {
+        MuscleGroup.chest: 1.0,
+        MuscleGroup.frontDelt: 0.5,
+        MuscleGroup.triceps: 0.5,
+      },
     ),
 
     'lat_pulldown': const MovementData(
@@ -725,6 +798,11 @@ class MovementLibrary {
         '「手肘向身體兩側砸下」— 摒除二頭肌代償',
         '「底部夾緊停頓，回放慢速拉長」— 滿行程張力',
       ],
+      muscleWeights: {
+        MuscleGroup.back: 1.0,
+        MuscleGroup.biceps: 0.5,
+        MuscleGroup.sideDelt: 0.5,
+      },
     ),
 
     'dips': const MovementData(
@@ -763,6 +841,11 @@ class MovementLibrary {
         '「身體前傾30度，手肘向後折」— 胸下緣力臂',
         '「雙肩遠離耳朵，手掌向下推碎雙槓」— 頂端鎖定',
       ],
+      muscleWeights: {
+        MuscleGroup.chest: 1.0,
+        MuscleGroup.frontDelt: 0.5,
+        MuscleGroup.triceps: 0.5,
+      },
     ),
 
     'trx_plank': const MovementData(
@@ -801,6 +884,9 @@ class MovementLibrary {
         '「屁股夾死，腹部往內吸緊」— 防凹下背',
         '「身體化身鋼鐵鋁罐，拒絕晃動塌腰」— 深層核心',
       ],
+      muscleWeights: {
+        MuscleGroup.core: 1.0,
+      },
     ),
   };
 }

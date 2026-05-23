@@ -4,8 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../app/theme/app_theme.dart';
 import '../../../core/database/app_database.dart';
 import '../../../core/services/google_drive_service.dart';
+import '../../program/domain/muscle_volume.dart';
 import '../domain/csv_export_service.dart';
 import '../domain/one_rm_calculator.dart';
+import '../domain/readiness_notifier.dart';
+import '../domain/weekly_volume_provider.dart';
 import 'widgets/exercise_card.dart';
 
 /// 訓練日誌頁面
@@ -18,6 +21,12 @@ class TrainingLogPage extends ConsumerStatefulWidget {
 
 class _TrainingLogPageState extends ConsumerState<TrainingLogPage> {
   final DateTime _selectedDate = DateTime.now();
+
+  // CNS 準備度表單（僅在展開時使用）
+  bool _readinessExpanded = false;
+  int _sleepRating = 3;
+  double _energyLevel = 5.0;
+  int _sorenessRating = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +68,12 @@ class _TrainingLogPageState extends ConsumerState<TrainingLogPage> {
             child: ListView(
               padding: const EdgeInsets.all(16),
               children: [
+                // ── 本週訓練量儀表板 ──
+                _buildWeeklyVolumeCard(),
+
+                // ── CNS 準備度評估 ──
+                _buildReadinessCard(),
+
                 // 動作卡片
                 ExerciseCard(
                   exerciseName: '背蹲舉（高槓）',
@@ -182,6 +197,184 @@ class _TrainingLogPageState extends ConsumerState<TrainingLogPage> {
     );
   }
 
+  // ── 本週訓練量儀表板 ──────────────────────────────────
+  Widget _buildWeeklyVolumeCard() {
+    final asyncVolume = ref.watch(weeklyVolumeProvider);
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.surface2,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF2A2A2A)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Text('本週訓練量',
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white)),
+              Spacer(),
+              Text('WEEKLY VOLUME',
+                  style: TextStyle(
+                      fontSize: 9,
+                      color: AppTheme.textSecond,
+                      letterSpacing: 1)),
+            ],
+          ),
+          const SizedBox(height: 2),
+          const Text('0.5×輔助 + 1.0×主動 加權法',
+              style:
+                  TextStyle(fontSize: 10, color: AppTheme.textSecond)),
+          const SizedBox(height: 12),
+          asyncVolume.when(
+            loading: () => const Center(
+                child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2)),
+            )),
+            error: (e, _) => Text('載入失敗: $e',
+                style: const TextStyle(
+                    color: Colors.redAccent, fontSize: 11)),
+            data: (volume) => _VolumeBarList(volume: volume),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── CNS 準備度評估 Card ──────────────────────────────
+  Widget _buildReadinessCard() {
+    final readiness = ref.watch(readinessProvider);
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppTheme.surface2,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFF2A2A2A)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('CNS 準備度評估',
+              style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white)),
+          const SizedBox(height: 2),
+          const Text('每日評估一次，即可獲得今日 RPE 建議',
+              style:
+                  TextStyle(fontSize: 10, color: AppTheme.textSecond)),
+          const SizedBox(height: 12),
+          if (readiness.isToday) ...[
+            // 已評估：顯示狀態 + 建議
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1A2A0A),
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: const Color(0xFF4A8A0A)),
+                  ),
+                  child: Text(
+                    readiness.levelLabel,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w700),
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  '${readiness.score.toStringAsFixed(1)} / 10',
+                  style: const TextStyle(
+                      fontSize: 11, color: AppTheme.textSecond),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              readiness.rpeAdvice,
+              style: const TextStyle(
+                  fontSize: 12,
+                  color: Color(0xFFBBBBBB),
+                  height: 1.4),
+            ),
+            const SizedBox(height: 4),
+            TextButton(
+              onPressed: () => ref
+                  .read(readinessProvider.notifier)
+                  .reset(),
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                foregroundColor: AppTheme.textSecond,
+              ),
+              child: const Text('重新評估',
+                  style: TextStyle(fontSize: 11)),
+            ),
+          ] else if (_readinessExpanded) ...[
+            // 展開表單
+            _ReadinessFormContent(
+              sleep: _sleepRating,
+              energy: _energyLevel,
+              soreness: _sorenessRating,
+              onSleepChanged: (v) => setState(() => _sleepRating = v),
+              onEnergyChanged: (v) =>
+                  setState(() => _energyLevel = v),
+              onSorenessChanged: (v) =>
+                  setState(() => _sorenessRating = v),
+            ),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppTheme.accent,
+                  foregroundColor: Colors.black,
+                ),
+                onPressed: () {
+                  ref.read(readinessProvider.notifier).assess(
+                        sleep: _sleepRating,
+                        energy: _energyLevel,
+                        soreness: _sorenessRating,
+                      );
+                  setState(() => _readinessExpanded = false);
+                },
+                child: const Text('確認評估',
+                    style: TextStyle(fontWeight: FontWeight.w700)),
+              ),
+            ),
+          ] else ...[
+            // 未評估：顯示按鈕
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Color(0xFF4A8A0A)),
+                  foregroundColor: AppTheme.accent,
+                ),
+                icon: const Icon(Icons.assessment_outlined, size: 16),
+                label: const Text('評估今日狀態'),
+                onPressed: () =>
+                    setState(() => _readinessExpanded = true),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   // ── 導出 CSV + Google Drive ────────────────────────────
   Future<void> _exportCsv() async {
     final messenger = ScaffoldMessenger.of(context);
@@ -286,4 +479,203 @@ class _StatCard extends StatelessWidget {
       ]),
     ),
   );
+}
+
+// ── 本週訓練量 — 9 大肌群橫條圖 ─────────────────────────
+class _VolumeBarList extends StatelessWidget {
+  const _VolumeBarList({required this.volume});
+  final Map<MuscleGroup, double> volume;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: MuscleGroup.values.map((mg) {
+        final sets = volume[mg] ?? 0.0;
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 56,
+                child: Text(
+                  mg.label,
+                  style: const TextStyle(
+                      fontSize: 11, color: Color(0xFFCCCCCC)),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: LayoutBuilder(builder: (context, constraints) {
+                  final fraction =
+                      (sets / MuscleVolumeCalc.junk).clamp(0.0, 1.0);
+                  return Stack(
+                    children: [
+                      Container(
+                        height: 10,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF222222),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                      FractionallySizedBox(
+                        widthFactor: fraction,
+                        child: Container(
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: mg.zoneColor(sets),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+              const SizedBox(width: 8),
+              SizedBox(
+                width: 38,
+                child: Text(
+                  sets > 0
+                      ? sets.toStringAsFixed(sets % 1 == 0 ? 0 : 1)
+                      : '—',
+                  textAlign: TextAlign.right,
+                  style: const TextStyle(
+                      fontSize: 11, color: Color(0xFFBBBBBB)),
+                ),
+              ),
+              const SizedBox(width: 6),
+              SizedBox(
+                width: 60,
+                child: Text(
+                  mg.zoneLabel(sets),
+                  style: TextStyle(
+                      fontSize: 9,
+                      color: mg.zoneColor(sets),
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+}
+
+// ── CNS 準備度 — 表單輸入 ────────────────────────────────
+class _ReadinessFormContent extends StatelessWidget {
+  const _ReadinessFormContent({
+    required this.sleep,
+    required this.energy,
+    required this.soreness,
+    required this.onSleepChanged,
+    required this.onEnergyChanged,
+    required this.onSorenessChanged,
+  });
+
+  final int sleep;
+  final double energy;
+  final int soreness;
+  final void Function(int) onSleepChanged;
+  final void Function(double) onEnergyChanged;
+  final void Function(int) onSorenessChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 睡眠品質：1–5 星
+        const Text('睡眠品質',
+            style: TextStyle(fontSize: 11, color: AppTheme.textSecond)),
+        const SizedBox(height: 4),
+        Row(
+          children: List.generate(5, (i) {
+            final star = i + 1;
+            return GestureDetector(
+              onTap: () => onSleepChanged(star),
+              child: Icon(
+                Icons.star,
+                size: 28,
+                color: star <= sleep
+                    ? const Color(0xFFFFCC00)
+                    : const Color(0xFF333333),
+              ),
+            );
+          }),
+        ),
+
+        const SizedBox(height: 12),
+
+        // 精力狀態：1–10 滑桿
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text('今日精力',
+                style: TextStyle(fontSize: 11, color: AppTheme.textSecond)),
+            Text(
+              energy.toStringAsFixed(1),
+              style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: AppTheme.accent),
+            ),
+          ],
+        ),
+        SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+            activeTrackColor: AppTheme.accent,
+            thumbColor: AppTheme.accent,
+            inactiveTrackColor: const Color(0xFF333333),
+            overlayColor: AppTheme.accent.withAlpha(40),
+          ),
+          child: Slider(
+            min: 1,
+            max: 10,
+            divisions: 9,
+            value: energy,
+            onChanged: onEnergyChanged,
+          ),
+        ),
+
+        const SizedBox(height: 4),
+
+        // 肌肉酸痛：1–5 星（1=無酸痛，5=非常酸痛）
+        const Text('肌肉酸痛程度',
+            style: TextStyle(fontSize: 11, color: AppTheme.textSecond)),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            ...List.generate(5, (i) {
+              final star = i + 1;
+              return GestureDetector(
+                onTap: () => onSorenessChanged(star),
+                child: Icon(
+                  Icons.whatshot,
+                  size: 26,
+                  color: star <= soreness
+                      ? const Color(0xFFFF6644)
+                      : const Color(0xFF333333),
+                ),
+              );
+            }),
+            const SizedBox(width: 8),
+            Text(
+              soreness <= 1
+                  ? '無酸痛'
+                  : soreness <= 2
+                      ? '輕微'
+                      : soreness <= 3
+                          ? '中等'
+                          : soreness <= 4
+                              ? '明顯'
+                              : '非常酸',
+              style: const TextStyle(
+                  fontSize: 10, color: AppTheme.textSecond),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }

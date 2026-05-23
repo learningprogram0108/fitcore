@@ -13,10 +13,13 @@
 - 估算 1RM 趨勢圖（Brzycki / Epley 公式）
 - 一鍵匯出訓練日誌 CSV，可選同步至 Google Drive
 - 本地 SQLite 優先儲存，完整離線支援
+- **本週訓練量儀表板**：9 大肌群（胸、背、股四頭、臀腿後、前/中後三角、三頭、二頭、核心）加權組數橫條圖，依 Helms 金字塔分為維持 / 黃金成長 / 垃圾容量三區間
+- **CNS 準備度評估**：每日睡眠品質、精力、肌肉酸痛三維度評分，自動輸出 🟢/🟡/🔴 狀態與 RPE 建議
 
 ### 🗓️ 週期化課表
 - 4 天訓練分配（下肢推力、水平推拉、後鏈、上肢混合）
 - 點擊動作進入訓練記錄頁，內含 Movement Bible 六階段動作指南
+- **磷酸肌酸休息建議**：確認每組後依次數與 RPE 自動顯示磷酸原 / 無氧糖解 / 代謝系統能量分析及建議休息時長
 - 動作替換功能（桌面點擊選單 / 手機長壓底部彈出）
 - 完成當日所有動作後一鍵寫入日誌資料庫
 
@@ -30,7 +33,7 @@
 ### 🔥 運動營養
 - TDEE 計算（Mifflin-St Jeor BMR）
 - 三大營養素目標（蛋白質 1.6–2.6 g/kg）
-- EA 能量可利用性監測（< 30 kcal/kg → RED-S 警示）
+- **EA 能量可用性（Energy Availability）警戒**：即時計算 EA = (攝入熱量 − 運動消耗) ÷ 瘦體重，< 30 kcal/kg FFM 自動顯示 RED-S 警告（睪固酮↓ · 甲狀腺↓ · 骨密度↓）
 
 ### 🤖 AI 教練
 - Google Gemini 2.5 Flash Lite 驅動
@@ -71,18 +74,21 @@ fitcore/
 │   │   ├── training_log/                  # 訓練日誌 + CSV 匯出
 │   │   │   ├── domain/
 │   │   │   │   ├── csv_export_service.dart
-│   │   │   │   └── one_rm_calculator.dart
+│   │   │   │   ├── one_rm_calculator.dart
+│   │   │   │   ├── readiness_notifier.dart    # CNS 準備度狀態管理
+│   │   │   │   └── weekly_volume_provider.dart # 本週肌群訓練量計算
 │   │   │   └── presentation/
 │   │   │       ├── training_log_page.dart
 │   │   │       └── widgets/exercise_card.dart
 │   │   ├── program/                       # 課表管理
 │   │   │   ├── domain/
 │   │   │   │   ├── movement_data.dart     # 20 個動作 Movement Bible 資料
+│   │   │   │   ├── muscle_volume.dart     # MuscleGroup enum + Helms 加權計算
 │   │   │   │   ├── workout_session_notifier.dart
 │   │   │   │   └── periodization_engine.dart
 │   │   │   └── presentation/
 │   │   │       ├── program_page.dart
-│   │   │       └── exercise_detail_page.dart
+│   │   │       └── exercise_detail_page.dart  # 含磷酸肌酸休息建議
 │   │   ├── knowledge_base/                # 動作知識庫 + 解剖圖
 │   │   ├── nutrition/                     # 運動營養追蹤
 │   │   └── ai_coach/                      # Gemini AI 教練

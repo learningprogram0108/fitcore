@@ -38,6 +38,8 @@ class _ExerciseDetailPageState extends ConsumerState<ExerciseDetailPage> {
   // 每組的輸入控制器: [weightCtrl, repsCtrl, rpeCtrl]
   final List<_SetRowState> _rows = [];
   late final MovementData? _data;
+  // 最後一組確認後的休息建議
+  ({String duration, String reason, String system})? _restGuide;
 
   @override
   void initState() {
@@ -92,7 +94,10 @@ class _ExerciseDetailPageState extends ConsumerState<ExerciseDetailPage> {
       );
       return;
     }
-    setState(() => row.confirmed = true);
+    setState(() {
+      row.confirmed = true;
+      _restGuide = _RestGuide.for_(r, rpe);
+    });
   }
 
   void _saveAndPop() {
@@ -178,6 +183,8 @@ class _ExerciseDetailPageState extends ConsumerState<ExerciseDetailPage> {
               onRemoveRow: _removeRow,
               onConfirmRow: _confirmRow,
             ),
+            if (_restGuide != null)
+              _RestRecommendationCard(guide: _restGuide!),
             const Divider(color: Color(0xFF2A2A2A), height: 1),
             if (_data != null) _MovementGuidePanel(data: _data),
           ],
@@ -452,6 +459,102 @@ class _InputField extends StatelessWidget {
   }
 }
 
+// ── Rest Guide Logic ─────────────────────────────────────────
+abstract class _RestGuide {
+  static ({String duration, String reason, String system}) for_(
+      int reps, double rpe) {
+    if (rpe >= 9 || reps <= 3) {
+      return (
+        duration: '3–5 分鐘',
+        reason: 'PCr 系統全消耗，縮短休息會使下組力量下降 15–20%',
+        system: '⚡ 磷酸原系統',
+      );
+    }
+    if (reps <= 6) {
+      return (
+        duration: '2–3 分鐘',
+        reason: 'PCr 消耗達 70%，2 分鐘可恢復至 85% 最大發力',
+        system: '⚡ 磷酸原 + 無氧糖解',
+      );
+    }
+    if (reps <= 12) {
+      return (
+        duration: '90秒–2分鐘',
+        reason: '無氧糖解主導，代謝壓力促進肌肥大，過長休息降低泵感',
+        system: '🔥 無氧糖解系統',
+      );
+    }
+    return (
+      duration: '60–90 秒',
+      reason: '代謝型訓練，縮短休息維持泵感與代謝壓力',
+      system: '🔥 代謝 / 有氧',
+    );
+  }
+}
+
+// ── Rest Recommendation Card ─────────────────────────────────
+class _RestRecommendationCard extends StatelessWidget {
+  const _RestRecommendationCard({
+    required this.guide,
+  });
+
+  final ({String duration, String reason, String system}) guide;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFF141A0A),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: const Color(0xFF2E4A10)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                guide.system,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFFC8FF47),
+                  letterSpacing: 0.5,
+                ),
+              ),
+              const Spacer(),
+              const Text(
+                '建議休息',
+                style: TextStyle(fontSize: 11, color: Color(0xFF888888)),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                guide.duration,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w800,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            guide.reason,
+            style: const TextStyle(
+              fontSize: 12,
+              color: Color(0xFF999999),
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // ── Movement Guide Panel ─────────────────────────────────────
 class _MovementGuidePanel extends StatelessWidget {
   const _MovementGuidePanel({required this.data});
@@ -460,6 +563,8 @@ class _MovementGuidePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(16),
       children: [
         const Text('📖 動作指南',

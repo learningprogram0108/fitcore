@@ -41,6 +41,25 @@ class AppDatabase extends _$AppDatabase {
       // 未來 schema 升級邏輯
     },
   );
+
+  // ── 本週各動作已記錄組數（供訓練量儀表板使用）──────────────
+  /// 回傳 {movementId → 本週已寫入 DB 的組數}
+  /// weekStart：本週一 00:00:00
+  Future<Map<String, int>> getWeeklySetCounts(DateTime weekStart) async {
+    final query = select(workoutSets).join([
+      innerJoin(workoutSessions,
+          workoutSessions.id.equalsExp(workoutSets.sessionId)),
+    ])
+      ..where(workoutSessions.date.isBiggerOrEqualValue(weekStart));
+
+    final rows = await query.get();
+    final result = <String, int>{};
+    for (final row in rows) {
+      final ex = row.readTable(workoutSets).exercise;
+      result[ex] = (result[ex] ?? 0) + 1;
+    }
+    return result;
+  }
 }
 
 /// Drift 開啟本地 SQLite 連接
