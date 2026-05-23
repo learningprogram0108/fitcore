@@ -130,7 +130,6 @@ class _ExerciseDetailPageState extends ConsumerState<ExerciseDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = MediaQuery.of(context).size.width >= 720;
     final name = widget.extra?.name ?? _data?.name ?? widget.movementId;
     final prescription = widget.extra?.prescription ?? '';
 
@@ -170,38 +169,20 @@ class _ExerciseDetailPageState extends ConsumerState<ExerciseDetailPage> {
         ],
       ),
       backgroundColor: const Color(0xFF0A0A0A),
-      body: isDesktop
-          ? Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 420,
-                  child: _SetLoggingPanel(
-                    rows: _rows,
-                    onAddRow: _addRow,
-                    onRemoveRow: _removeRow,
-                    onConfirmRow: _confirmRow,
-                  ),
-                ),
-                const VerticalDivider(width: 1, color: Color(0xFF2A2A2A)),
-                if (_data != null)
-                  Expanded(child: _MovementGuidePanel(data: _data)),
-              ],
-            )
-          : SingleChildScrollView(
-              child: Column(
-                children: [
-                  _SetLoggingPanel(
-                    rows: _rows,
-                    onAddRow: _addRow,
-                    onRemoveRow: _removeRow,
-                    onConfirmRow: _confirmRow,
-                  ),
-                  const Divider(color: Color(0xFF2A2A2A), height: 1),
-                  if (_data != null) _MovementGuidePanel(data: _data),
-                ],
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _SetLoggingPanel(
+              rows: _rows,
+              onAddRow: _addRow,
+              onRemoveRow: _removeRow,
+              onConfirmRow: _confirmRow,
             ),
+            const Divider(color: Color(0xFF2A2A2A), height: 1),
+            if (_data != null) _MovementGuidePanel(data: _data),
+          ],
+        ),
+      ),
     );
   }
 }

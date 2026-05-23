@@ -490,43 +490,30 @@ class _ProgramBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDesktop = MediaQuery.of(context).size.width >= 720;
     final day = days[selectedDay];
-    if (isDesktop) {
-      return Row(
-        children: [
-          SizedBox(
-            width: 260,
-            child: _DayCardList(
-              days: days,
-              selectedDay: selectedDay,
-              onDaySelected: onDaySelected,
-            ),
+    return Column(
+      children: [
+        _DayTabRow(
+          days: days,
+          selectedDay: selectedDay,
+          onDaySelected: onDaySelected,
+        ),
+        const Divider(height: 1, color: AppTheme.border),
+        Expanded(
+          child: _MovementDetail(
+            day: day,
+            dayIdx: selectedDay,
+            onReplaceExercise: onReplaceExercise,
           ),
-          const VerticalDivider(width: 1),
-          Expanded(
-            child: _MovementDetail(
-              day: day,
-              dayIdx: selectedDay,
-              onReplaceExercise: onReplaceExercise,
-            ),
-          ),
-          const VerticalDivider(width: 1),
-          SizedBox(width: 280, child: _ProgramInfo(day: day)),
-        ],
-      );
-    }
-    return _DayCardList(
-      days: days,
-      selectedDay: selectedDay,
-      onDaySelected: onDaySelected,
+        ),
+      ],
     );
   }
 }
 
-// ── Day Card 列表 ─────────────────────────────────────────────
-class _DayCardList extends StatelessWidget {
-  const _DayCardList({
+// ── Day 選擇列（橫向 ChoiceChip）────────────────────────────────
+class _DayTabRow extends StatelessWidget {
+  const _DayTabRow({
     required this.days,
     required this.selectedDay,
     required this.onDaySelected,
@@ -536,113 +523,50 @@ class _DayCardList extends StatelessWidget {
   final void Function(int) onDaySelected;
 
   @override
-  Widget build(BuildContext context) => ListView.separated(
-    padding: const EdgeInsets.all(12),
-    itemCount: days.length,
-    separatorBuilder: (_, __) => const SizedBox(height: 8),
-    itemBuilder: (_, i) => _DayCard(
-      day: days[i],
-      isToday: i == 0,
-      isSelected: i == selectedDay,
-      onTap: () => onDaySelected(i),
-    ),
-  );
-}
-
-class _DayCard extends StatelessWidget {
-  const _DayCard({
-    required this.day,
-    required this.isToday,
-    required this.isSelected,
-    required this.onTap,
-  });
-  final _DayData day;
-  final bool isToday, isSelected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final borderColor = isSelected
-        ? AppTheme.accent
-        : isToday
-            ? AppTheme.accent.withAlpha(150)
-            : AppTheme.border;
-    final borderWidth = isSelected ? 2.0 : (isToday ? 1.5 : 1.0);
-
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(10),
-      child: Card(
-        margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-          side: BorderSide(color: borderColor, width: borderWidth),
-        ),
-        color: isSelected ? const Color(0xFF1B2910) : null,
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 8),
-            child: Row(children: [
-              Container(
-                width: 28, height: 28,
-                decoration: BoxDecoration(
-                  color: isSelected || isToday
-                      ? AppTheme.accentDim
-                      : AppTheme.surface3,
-                  borderRadius: BorderRadius.circular(7),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  'D${day.dayNum}',
+  Widget build(BuildContext context) => SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    child: Row(
+      children: days.asMap().entries.map((entry) {
+        final i = entry.key;
+        final d = entry.value;
+        final selected = i == selectedDay;
+        return Padding(
+          padding: const EdgeInsets.only(right: 8),
+          child: ChoiceChip(
+            label: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Day ${d.dayNum}',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w800,
-                    color: (isSelected || isToday)
-                        ? AppTheme.accent
-                        : AppTheme.textSecond,
+                    color: selected ? Colors.black : AppTheme.accent,
                   ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(day.title,
-                        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
-                    if (isToday)
-                      const Text('▶ 今日訓練',
-                          style: TextStyle(fontSize: 8, color: AppTheme.accent)),
-                    Text(day.focus,
-                        style: const TextStyle(fontSize: 8, color: AppTheme.textDisabled)),
-                  ],
-                ),
-              ),
-              if (isSelected)
-                const Icon(Icons.chevron_right, size: 14, color: AppTheme.accent),
-            ]),
-          ),
-          ...day.exercises.map(
-            (e) => Padding(
-              padding: const EdgeInsets.fromLTRB(14, 2, 14, 2),
-              child: Row(children: [
-                Text(e.emoji, style: const TextStyle(fontSize: 10)),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    '${e.name} — ${e.prescription}',
-                    style: const TextStyle(fontSize: 10),
-                    overflow: TextOverflow.ellipsis,
+                Text(
+                  d.title,
+                  style: TextStyle(
+                    fontSize: 9,
+                    color: selected ? Colors.black87 : AppTheme.textSecond,
                   ),
                 ),
-              ]),
+              ],
             ),
+            selected: selected,
+            selectedColor: AppTheme.accent,
+            backgroundColor: AppTheme.surface2,
+            side: BorderSide(
+              color: selected ? AppTheme.accent : AppTheme.border,
+            ),
+            onSelected: (_) => onDaySelected(i),
           ),
-          const SizedBox(height: 8),
-        ]),
-      ),
-    );
-  }
+        );
+      }).toList(),
+    ),
+  );
 }
 
 // ── 動作詳情面板（中欄）────────────────────────────────────────
@@ -668,7 +592,6 @@ class _MovementDetail extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(workoutSessionProvider);
-    final isDesktop = MediaQuery.of(context).size.width >= 720;
     final complete = _isComplete(session);
 
     return Column(
@@ -695,7 +618,6 @@ class _MovementDetail extends ConsumerWidget {
                   exIdx: e.key,
                   dayIdx: dayIdx,
                   session: session,
-                  isDesktop: isDesktop,
                   onNavigate: () => _navigateToDetail(context, e.value),
                   onReplace: () => _showReplace(context, e.key),
                 ),
@@ -800,14 +722,12 @@ class _ExerciseRow extends StatelessWidget {
     required this.exIdx,
     required this.dayIdx,
     required this.session,
-    required this.isDesktop,
     required this.onNavigate,
     required this.onReplace,
   });
   final _ExerciseEntry exercise;
   final int exIdx, dayIdx;
   final WorkoutSessionState session;
-  final bool isDesktop;
   final VoidCallback onNavigate;
   final VoidCallback onReplace;
 
@@ -820,10 +740,8 @@ class _ExerciseRow extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 6),
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
-        onTap: isDesktop
-            ? () => _showDesktopOptions(context)
-            : onNavigate,
-        onLongPress: isDesktop ? null : onReplace,
+        onTap: onNavigate,
+        onLongPress: onReplace,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
           decoration: BoxDecoration(
@@ -901,52 +819,6 @@ class _ExerciseRow extends StatelessWidget {
     );
   }
 
-  void _showDesktopOptions(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor: const Color(0xFF181818),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(exercise.name,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-            Text(exercise.prescription,
-                style: const TextStyle(fontSize: 11, color: AppTheme.textSecond)),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.fitness_center, color: AppTheme.accent),
-              title: const Text('▶ 進入訓練記錄',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
-              subtitle: const Text('記錄組數、重量、RPE',
-                  style: TextStyle(fontSize: 11, color: AppTheme.textSecond)),
-              onTap: () {
-                Navigator.of(context, rootNavigator: true).pop();
-                onNavigate();
-              },
-            ),
-            const Divider(color: AppTheme.border, height: 1),
-            ListTile(
-              leading: const Icon(Icons.swap_horiz, color: AppTheme.accentWarm),
-              title: const Text('🔄 更換動作',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
-              subtitle: const Text('從知識庫選擇替代動作',
-                  style: TextStyle(fontSize: 11, color: AppTheme.textSecond)),
-              onTap: () {
-                Navigator.of(context, rootNavigator: true).pop();
-                onReplace();
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
 
 // ── 動作替換 Dialog ───────────────────────────────────────────
@@ -1050,130 +922,6 @@ class _BulletNote extends StatelessWidget {
   );
 }
 
-// ── 右側週期化資訊面板 ────────────────────────────────────────
-class _ProgramInfo extends StatelessWidget {
-  const _ProgramInfo({required this.day});
-  final _DayData day;
-
-  @override
-  Widget build(BuildContext context) => ListView(
-    padding: const EdgeInsets.all(14),
-    children: [
-      const _SectionLabel('週期化狀態'),
-      const SizedBox(height: 8),
-      const _InfoCard(children: [
-        _InfoRow('當前週', 'Week 3 / 4', AppTheme.accent),
-        _InfoRow('週期類型', '峰值衝刺週', AppTheme.accentWarm),
-        _InfoRow('目標 RPE', '8 – 8.5', AppTheme.muscPrimary),
-        _InfoRow('下週', '降量週 🔻', AppTheme.textSecond),
-      ]),
-      const SizedBox(height: 16),
-      const _SectionLabel('RIR 留力指引'),
-      const SizedBox(height: 8),
-      const _InfoCard(children: [
-        _RirRow('RIR 4+', '熱身 / 準備組', AppTheme.border2),
-        _RirRow('RIR 3', '輕鬆訓練', AppTheme.textDisabled),
-        _RirRow('RIR 2', '主要工作組目標', AppTheme.muscTertiary),
-        _RirRow('RIR 1', '衝刺（最後組）', AppTheme.muscSecond),
-        _RirRow('RIR 0', '力竭（測試用）', AppTheme.muscPrimary),
-      ]),
-      const SizedBox(height: 16),
-      const _SectionLabel('Week 4 降量週'),
-      const SizedBox(height: 8),
-      Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: AppTheme.surface2,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppTheme.border),
-        ),
-        child: const Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Volume -40%  ·  Intensity 維持',
-                style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.accentWarm)),
-            SizedBox(height: 6),
-            Text(
-              '降量週目的是神經系統恢復與超量恢復。'
-              '組數減少但重量不降，讓身體適應後達到更高峰值。',
-              style: TextStyle(fontSize: 10, height: 1.6),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
-
-// ── 共用小元件 ───────────────────────────────────────────────
-class _InfoCard extends StatelessWidget {
-  const _InfoCard({required this.children});
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.all(10),
-    decoration: BoxDecoration(
-      color: AppTheme.surface2,
-      borderRadius: BorderRadius.circular(8),
-      border: Border.all(color: AppTheme.border),
-    ),
-    child: Column(children: children),
-  );
-}
-
-class _InfoRow extends StatelessWidget {
-  const _InfoRow(this.label, this.value, this.valueColor);
-  final String label, value;
-  final Color valueColor;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Row(children: [
-      Expanded(
-        child: Text(label,
-            style: const TextStyle(fontSize: 10, color: AppTheme.textSecond)),
-      ),
-      Text(value,
-          style: TextStyle(
-              fontSize: 10, fontWeight: FontWeight.w700, color: valueColor)),
-    ]),
-  );
-}
-
-class _RirRow extends StatelessWidget {
-  const _RirRow(this.rir, this.desc, this.color);
-  final String rir, desc;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 3),
-    child: Row(children: [
-      Container(
-        width: 40,
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-        decoration: BoxDecoration(
-          color: color.withAlpha(40),
-          borderRadius: BorderRadius.circular(4),
-        ),
-        child: Text(rir,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 9, fontWeight: FontWeight.w700, color: color)),
-      ),
-      const SizedBox(width: 8),
-      Expanded(
-        child: Text(desc,
-            style: const TextStyle(fontSize: 10, color: AppTheme.textSecond)),
-      ),
-    ]),
-  );
-}
 
 class _SectionLabel extends StatelessWidget {
   const _SectionLabel(this.text);

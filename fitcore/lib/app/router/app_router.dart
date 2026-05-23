@@ -73,37 +73,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   );
 });
 
-// ── 主框架 Shell（底部導覽 / 側邊導覽自適應）────────────
+// ── 主框架 Shell（底部導覽）──────────────────────────────
 class _MainShell extends StatelessWidget {
   const _MainShell({required this.child});
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    // 桌面端（Windows）：側邊導覽欄 + 內容區
-    // 行動端（Android）：底部導覽列
-    final isDesktop = MediaQuery.of(context).size.width >= 720;
-    if (isDesktop) return _DesktopLayout(child: child);
-    return _MobileLayout(child: child);
-  }
-}
-
-class _DesktopLayout extends StatelessWidget {
-  const _DesktopLayout({required this.child});
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          _sideNav(context),
-          const VerticalDivider(width: 1),
-          Expanded(child: child),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => _MobileLayout(child: child);
 }
 
 class _MobileLayout extends StatelessWidget {
@@ -117,28 +93,6 @@ class _MobileLayout extends StatelessWidget {
       bottomNavigationBar: _bottomNav(context),
     );
   }
-}
-
-// ── 側邊導覽欄（桌面）────────────────────────────────────
-Widget _sideNav(BuildContext context) {
-  final location = GoRouterState.of(context).uri.toString();
-  return NavigationRail(
-    backgroundColor: const Color(0xFF141414),
-    selectedIndex: _navIndex(location),
-    onDestinationSelected: (i) => _navigate(context, i),
-    labelType: NavigationRailLabelType.all,
-    minWidth: 68,
-    leading: const _LogoWidget(),
-    selectedLabelTextStyle: const TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: Color(0xFFC8FF47)),
-    unselectedLabelTextStyle: const TextStyle(fontSize: 9, color: Color(0xFF666666)),
-    destinations: const [
-      NavigationRailDestination(icon: Icon(Icons.edit_note_outlined), selectedIcon: Icon(Icons.edit_note), label: Text('日誌')),
-      NavigationRailDestination(icon: Icon(Icons.calendar_month_outlined), selectedIcon: Icon(Icons.calendar_month), label: Text('課表')),
-      NavigationRailDestination(icon: Icon(Icons.local_fire_department_outlined), selectedIcon: Icon(Icons.local_fire_department), label: Text('營養')),
-      NavigationRailDestination(icon: Icon(Icons.auto_awesome_outlined), selectedIcon: Icon(Icons.auto_awesome), label: Text('AI')),
-      NavigationRailDestination(icon: Icon(Icons.menu_book_outlined), selectedIcon: Icon(Icons.menu_book), label: Text('知識庫')),
-    ],
-  );
 }
 
 // ── 底部導覽（行動端）────────────────────────────────────
@@ -171,22 +125,4 @@ void _navigate(BuildContext context, int i) {
     AppRoutes.aiCoach, AppRoutes.knowledge,
   ];
   context.go(routes[i]);
-}
-
-class _LogoWidget extends StatelessWidget {
-  const _LogoWidget();
-
-  @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 12),
-    child: Container(
-      width: 38, height: 38,
-      decoration: BoxDecoration(
-        color: const Color(0xFFC8FF47),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      alignment: Alignment.center,
-      child: const Text('FC', style: TextStyle(fontWeight: FontWeight.w900, fontSize: 14, color: Colors.black)),
-    ),
-  );
 }
