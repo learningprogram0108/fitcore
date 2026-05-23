@@ -4,8 +4,16 @@ import 'package:go_router/go_router.dart';
 
 import '../../../app/theme/app_theme.dart';
 import '../domain/movement_data.dart';
+import '../domain/prescription_matrix.dart';
 import '../domain/workout_session_notifier.dart';
 import 'exercise_detail_page.dart';
+
+// ── 動態處方計算 ──────────────────────────────────────────────
+String _computePrescription(String movementId, int week) {
+  final data = MovementLibrary.find(movementId);
+  if (data == null) return '';
+  return prescriptionFor(data.category, week).shortDisplay;
+}
 
 // ── 資料結構 ────────────────────────────────────────────────
 class _ExerciseEntry {
@@ -13,14 +21,12 @@ class _ExerciseEntry {
     required this.emoji,
     required this.name,
     required this.movementId,
-    required this.prescription,
     this.note = '',
     this.isOptional = false,
   });
   final String emoji;
   final String name;
   final String movementId;
-  final String prescription;
   final String note;
   /// 標記為可選（如奇偶週輪替動作）
   final bool isOptional;
@@ -29,7 +35,6 @@ class _ExerciseEntry {
     String? emoji,
     String? name,
     String? movementId,
-    String? prescription,
     String? note,
     bool? isOptional,
   }) =>
@@ -37,7 +42,6 @@ class _ExerciseEntry {
         emoji: emoji ?? this.emoji,
         name: name ?? this.name,
         movementId: movementId ?? this.movementId,
-        prescription: prescription ?? this.prescription,
         note: note ?? this.note,
         isOptional: isOptional ?? this.isOptional,
       );
@@ -76,42 +80,37 @@ const List<_DayData> _defaultDays = [
         emoji: '🏋️',
         name: '槓鈴背蹲舉（高背槓）',
         movementId: 'squat',
-        prescription: '4×6 @RPE 8',
         note: '高槓位，深度至股骨平行',
       ),
       _ExerciseEntry(
         emoji: '🦵',
         name: '保加利亞分腿蹲',
         movementId: 'bulgarian',
-        prescription: '3×10 each',
         note: '後腳放置椅上，前腳踩穩',
       ),
       _ExerciseEntry(
         emoji: '🚶',
         name: '農夫走路',
         movementId: 'farmers_walk',
-        prescription: '4×20m',
         note: '核心鎖緊，肩胛下壓',
       ),
       _ExerciseEntry(
         emoji: '🦶',
         name: '站姿提踵',
         movementId: 'calf_raise',
-        prescription: '4×15',
         note: '底部死停2秒消除彈性',
       ),
       _ExerciseEntry(
         emoji: '🌀',
         name: '哥本哈根側平舉',
         movementId: 'copenhagen',
-        prescription: '3×12 each',
         note: '內收肌群特化，額狀面抗剪力',
       ),
     ],
     coachNotes: [
       '瓦氏法：深吸氣→撐腹→下蹲→呼氣鎖定後推起',
       '膝蓋追蹤第2-3趾，避免膝外翻',
-      'Week 3 峰值週：組間休息 3 分鐘',
+      '肌肥大期（W1-3）：組間休息 90s；肌力期（W4-6）：休息 3+ 分鐘',
     ],
   ),
   _DayData(
@@ -123,42 +122,37 @@ const List<_DayData> _defaultDays = [
         emoji: '💪',
         name: '槓鈴臥推',
         movementId: 'bench',
-        prescription: '4×6 @RPE 8',
         note: '肩胛下壓後縮，軟暫停觸胸',
       ),
       _ExerciseEntry(
         emoji: '🔽',
         name: '正手寬握引體向上',
         movementId: 'pullup',
-        prescription: '4×AMRAP',
         note: '全ROM，主動懸掛啟動上背',
       ),
       _ExerciseEntry(
         emoji: '🏔️',
         name: '槓鈴肩推',
         movementId: 'ohp',
-        prescription: '3×6 @RPE 8',
         note: '站姿，前臂垂直，藏頭進窗',
       ),
       _ExerciseEntry(
         emoji: '🎯',
         name: '滑輪面拉',
         movementId: 'face_pull',
-        prescription: '3×15 @RPE 7',
         note: '大拇指朝後，W字型頂峰收縮',
       ),
       _ExerciseEntry(
         emoji: '🔧',
         name: '滑輪三頭下壓',
         movementId: 'triceps_pushdown',
-        prescription: '3×12 @RPE 7',
         note: '上臂死貼肋骨，底部擠壓2秒',
       ),
     ],
     coachNotes: [
       '臥推：大拇指扣握，腿部驅動力傳遞至槓鈴',
       '推拉比例 1:1，面拉保護肩關節長期健康',
-      'RIR 目標：前3組 RIR 2，最後組 RIR 1',
+      'RIR 目標：W1-3 前3組 RIR 2，最後組 RIR 1；W4-6 逼近極限',
     ],
   ),
   _DayData(
@@ -170,21 +164,18 @@ const List<_DayData> _defaultDays = [
         emoji: '🔩',
         name: '六角槓硬舉',
         movementId: 'hex_deadlift',
-        prescription: '4×5 @RPE 8.5',
         note: '雙腿蹬地，背部鋼板不彎曲',
       ),
       _ExerciseEntry(
         emoji: '💡',
         name: '澤奇深蹲',
         movementId: 'zercher',
-        prescription: '3×6 @RPE 7',
         note: '前載荷核心特化，用胸骨撞天花板',
       ),
       _ExerciseEntry(
         emoji: '🎿',
         name: '北歐腿彎舉（奇數週）',
         movementId: 'nordic',
-        prescription: '3×5 離心',
         note: '奇數週 · 純離心，3-5秒下放',
         isOptional: true,
       ),
@@ -192,7 +183,6 @@ const List<_DayData> _defaultDays = [
         emoji: '⚖️',
         name: '單腿羅馬尼亞硬舉（偶數週）',
         movementId: 'rdl',
-        prescription: '3×8 each',
         note: '偶數週 · 後腳如長槍向後刺',
         isOptional: true,
       ),
@@ -200,7 +190,6 @@ const List<_DayData> _defaultDays = [
         emoji: '🪑',
         name: '坐姿腿彎舉',
         movementId: 'leg_curl',
-        prescription: '3×12 @RPE 7',
         note: '拉長位肌肥大，3秒慢速回放',
       ),
     ],
@@ -219,40 +208,35 @@ const List<_DayData> _defaultDays = [
         emoji: '📐',
         name: '仰臥划船',
         movementId: 'inverted_row',
-        prescription: '3×12',
         note: '身體化鋼板，胸口貼槓1秒',
       ),
       _ExerciseEntry(
         emoji: '📈',
         name: '啞鈴上斜臥推',
         movementId: 'incline_press',
-        prescription: '3×10 @RPE 7',
         note: '30度角，肘45度，軟暫停底部',
       ),
       _ExerciseEntry(
         emoji: '⬇️',
         name: '寬握滑輪下拉',
         movementId: 'lat_pulldown',
-        prescription: '4×10',
         note: '大腿墊死壓，手肘砸地板',
       ),
       _ExerciseEntry(
         emoji: '⬆️',
         name: '雙槓撐體',
         movementId: 'dips',
-        prescription: '3×10',
         note: '前傾30度，特化胸下緣力臂',
       ),
       _ExerciseEntry(
         emoji: '🏗️',
         name: 'TRX 平板撐',
         movementId: 'trx_plank',
-        prescription: '3×45s',
         note: '不穩定面深層核心，抗晃動',
       ),
     ],
     coachNotes: [
-      'Day 4 是輔助日：控制強度 RPE ≤ 7.5',
+      'Day 4 是輔助日：控制強度 RPE ≤ 7.5（W1-3），W4-6 可酌量提升',
       'TRX平板撐：前臂向下壓碎地板，根除翼狀肩胛',
       '本週最後訓練日：完成後做 10 分鐘靜態伸展',
     ],
@@ -313,31 +297,80 @@ class _ProgramPageState extends ConsumerState<ProgramPage> {
   }
 }
 
-// ── 頂部資訊欄 ───────────────────────────────────────────────
-class _TopBar extends StatelessWidget {
+// ── 頂部資訊欄（動態 Week 選擇器）──────────────────────────────
+class _TopBar extends ConsumerWidget {
   const _TopBar();
 
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
-    decoration: const BoxDecoration(
-      border: Border(bottom: BorderSide(color: AppTheme.border)),
-    ),
-    child: Row(children: [
-      Expanded(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('4天全身功能性肌力週期化',
-              style: Theme.of(context).textTheme.headlineMedium),
-          const SizedBox(height: 2),
-          const Text('Mesocycle 1 · Week 3/4 · 漸進超負荷週',
-              style: TextStyle(fontSize: 11, color: AppTheme.textSecond)),
-        ]),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final week = ref.watch(programWeekProvider);
+    final notifier = ref.read(programWeekProvider.notifier);
+    final blockLabel = weekBlockLabel(week);
+
+    return Container(
+      padding: const EdgeInsets.fromLTRB(24, 16, 16, 12),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: AppTheme.border)),
       ),
-      const _WeekBadge('3', '當前週', AppTheme.accent),
-      const SizedBox(width: 8),
-      const _WeekBadge('21', '訓練天', AppTheme.accentWarm),
-    ]),
-  );
+      child: Row(children: [
+        Expanded(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('4天全身功能性肌力週期化',
+                style: Theme.of(context).textTheme.headlineMedium),
+            const SizedBox(height: 2),
+            Text('Mesocycle 1 · $blockLabel',
+                style: const TextStyle(fontSize: 11, color: AppTheme.textSecond)),
+          ]),
+        ),
+        // ── 週次選擇器 ──
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.chevron_left, size: 20),
+              color: week > 1 ? AppTheme.accent : AppTheme.textDisabled,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+              onPressed: week > 1 ? () => notifier.retreat() : null,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppTheme.surface2,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppTheme.accent.withValues(alpha: 0.6)),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Week $week / 6',
+                    style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w800,
+                        color: AppTheme.accent),
+                  ),
+                  Text(
+                    blockLabel,
+                    style: const TextStyle(fontSize: 8, color: AppTheme.textSecond),
+                  ),
+                ],
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.chevron_right, size: 20),
+              color: week < 6 ? AppTheme.accent : AppTheme.textDisabled,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(minWidth: 28, minHeight: 28),
+              onPressed: week < 6 ? () => notifier.advance() : null,
+            ),
+          ],
+        ),
+        const SizedBox(width: 4),
+        const _WeekBadge('21', '訓練天', AppTheme.accentWarm),
+      ]),
+    );
+  }
 }
 
 class _WeekBadge extends StatelessWidget {
@@ -362,40 +395,59 @@ class _WeekBadge extends StatelessWidget {
   );
 }
 
-// ── Mesocycle 週期概覽 ────────────────────────────────────────
-class _MesocycleTimeline extends StatelessWidget {
+// ── Mesocycle 6週概覽 ─────────────────────────────────────────
+class _MesocycleTimeline extends ConsumerWidget {
   const _MesocycleTimeline();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentWeek = ref.watch(programWeekProvider);
+
+    final weeks = [
+      (label: 'W1', subtitle: '肌肥大累積'),
+      (label: 'W2', subtitle: '肌肥大推進'),
+      (label: 'W3', subtitle: '肌肥大頂峰'),
+      (label: 'W4', subtitle: '肌力轉化'),
+      (label: 'W5', subtitle: '超負荷期'),
+      (label: 'W6 🔺', subtitle: '極致釋放'),
+    ];
+
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 12, 24, 12),
+      padding: const EdgeInsets.fromLTRB(24, 10, 24, 10),
       decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: AppTheme.border)),
       ),
-      child: const Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('MESOCYCLE 週期概覽',
+          const Text('MESOCYCLE 週期概覽',
               style: TextStyle(
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 1.5,
                   color: AppTheme.textSecond)),
-          SizedBox(height: 8),
-          Row(children: [
-            _WeekBlock(label: 'Week 1', subtitle: '張力積累',
-                isActive: false, isComplete: true),
-            SizedBox(width: 8),
-            _WeekBlock(label: 'Week 2', subtitle: '強度提升',
-                isActive: false, isComplete: true),
-            SizedBox(width: 8),
-            _WeekBlock(label: 'Week 3', subtitle: '峰值衝刺',
-                isActive: true, isComplete: false),
-            SizedBox(width: 8),
-            _WeekBlock(label: 'Week 4 🔻', subtitle: '降量恢復',
-                isActive: false, isComplete: false, isDeload: true),
-          ]),
+          const SizedBox(height: 8),
+          Row(
+            children: weeks.asMap().entries.map((entry) {
+              final weekNum = entry.key + 1;
+              final w = entry.value;
+              final isActive = weekNum == currentWeek;
+              final isComplete = weekNum < currentWeek;
+              final isStrength = weekNum >= 4;
+              return Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(right: entry.key < 5 ? 4 : 0),
+                  child: _WeekBlock(
+                    label: w.label,
+                    subtitle: w.subtitle,
+                    isActive: isActive,
+                    isComplete: isComplete,
+                    isStrength: isStrength,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ],
       ),
     );
@@ -408,25 +460,30 @@ class _WeekBlock extends StatelessWidget {
     required this.subtitle,
     required this.isActive,
     required this.isComplete,
-    this.isDeload = false,
+    this.isStrength = false,
   });
   final String label, subtitle;
-  final bool isActive, isComplete, isDeload;
+  final bool isActive, isComplete, isStrength;
 
   @override
-  Widget build(BuildContext context) => Expanded(
-    child: Container(
+  Widget build(BuildContext context) {
+    final activeColor = isStrength ? AppTheme.accentWarm : AppTheme.accent;
+    return Container(
       decoration: BoxDecoration(
-        color: isActive ? const Color(0xFF1B2910) : AppTheme.surface2,
-        borderRadius: BorderRadius.circular(8),
+        color: isActive
+            ? (isStrength
+                ? const Color(0xFF1E1A08)
+                : const Color(0xFF1B2910))
+            : AppTheme.surface2,
+        borderRadius: BorderRadius.circular(6),
         border: Border.all(
-          color: isActive ? AppTheme.accent : AppTheme.border,
+          color: isActive ? activeColor : AppTheme.border,
           width: isActive ? 1.5 : 1,
         ),
       ),
       child: Column(children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(8, 5, 8, 4),
+          padding: const EdgeInsets.fromLTRB(5, 4, 5, 2),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -434,35 +491,35 @@ class _WeekBlock extends StatelessWidget {
                 label,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 9,
+                  fontSize: 8,
                   fontWeight: FontWeight.w700,
-                  color: isDeload
-                      ? AppTheme.accentWarm
-                      : isActive
-                          ? AppTheme.accent
+                  color: isActive
+                      ? activeColor
+                      : isComplete
+                          ? AppTheme.accent.withValues(alpha: 0.6)
                           : AppTheme.textSecond,
                 ),
               ),
               Text(
                 subtitle,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 8, color: AppTheme.textDisabled),
+                style: const TextStyle(fontSize: 7, color: AppTheme.textDisabled),
               ),
             ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(6, 0, 6, 6),
+          padding: const EdgeInsets.fromLTRB(4, 0, 4, 4),
           child: Row(
             children: List.generate(4, (i) => Expanded(
               child: Container(
-                height: 4,
-                margin: const EdgeInsets.only(right: 2),
+                height: 3,
+                margin: const EdgeInsets.only(right: 1),
                 decoration: BoxDecoration(
                   color: isComplete
                       ? AppTheme.accent
                       : isActive && i < 2
-                          ? AppTheme.accent
+                          ? activeColor
                           : AppTheme.border2,
                   borderRadius: BorderRadius.circular(2),
                 ),
@@ -471,8 +528,8 @@ class _WeekBlock extends StatelessWidget {
           ),
         ),
       ]),
-    ),
-  );
+    );
+  }
 }
 
 // ── 主體佈局 ─────────────────────────────────────────────────
@@ -592,6 +649,7 @@ class _MovementDetail extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(workoutSessionProvider);
+    final week = ref.watch(programWeekProvider);
     final complete = _isComplete(session);
 
     return Column(
@@ -609,16 +667,17 @@ class _MovementDetail extends ConsumerWidget {
                   style: const TextStyle(fontSize: 10, color: AppTheme.textSecond)),
               const SizedBox(height: 20),
 
-              _SectionLabel('訓練動作（Week 3 · ${day.exercises.length} 個動作）'),
+              _SectionLabel('訓練動作（Week $week · ${day.exercises.length} 個動作）'),
               const SizedBox(height: 8),
 
               ...day.exercises.asMap().entries.map(
                 (e) => _ExerciseRow(
                   exercise: e.value,
+                  prescription: _computePrescription(e.value.movementId, week),
                   exIdx: e.key,
                   dayIdx: dayIdx,
                   session: session,
-                  onNavigate: () => _navigateToDetail(context, e.value),
+                  onNavigate: () => _navigateToDetail(context, e.value, week),
                   onReplace: () => _showReplace(context, e.key),
                 ),
               ),
@@ -669,7 +728,7 @@ class _MovementDetail extends ConsumerWidget {
                           : '完成所有動作後解鎖',
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
-                    onPressed: complete ? () => _completeSession(context, ref) : null,
+                    onPressed: complete ? () => _completeSession(context, ref, week) : null,
                   ),
                 ),
         ),
@@ -677,12 +736,12 @@ class _MovementDetail extends ConsumerWidget {
     );
   }
 
-  void _navigateToDetail(BuildContext context, _ExerciseEntry exercise) {
+  void _navigateToDetail(BuildContext context, _ExerciseEntry exercise, int week) {
     context.go(
       '/program/exercise/${exercise.movementId}',
       extra: ExerciseExtra(
         name: exercise.name,
-        prescription: exercise.prescription,
+        prescription: _computePrescription(exercise.movementId, week),
         dayNum: dayIdx + 1,
       ),
     );
@@ -700,9 +759,9 @@ class _MovementDetail extends ConsumerWidget {
     );
   }
 
-  Future<void> _completeSession(BuildContext context, WidgetRef ref) async {
+  Future<void> _completeSession(BuildContext context, WidgetRef ref, int week) async {
     final notifier = ref.read(workoutSessionProvider.notifier);
-    await notifier.completeSession(dayNum: dayIdx + 1, weekNum: 3);
+    await notifier.completeSession(dayNum: dayIdx + 1, weekNum: week);
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -719,6 +778,7 @@ class _MovementDetail extends ConsumerWidget {
 class _ExerciseRow extends StatelessWidget {
   const _ExerciseRow({
     required this.exercise,
+    required this.prescription,
     required this.exIdx,
     required this.dayIdx,
     required this.session,
@@ -726,6 +786,7 @@ class _ExerciseRow extends StatelessWidget {
     required this.onReplace,
   });
   final _ExerciseEntry exercise;
+  final String prescription;
   final int exIdx, dayIdx;
   final WorkoutSessionState session;
   final VoidCallback onNavigate;
@@ -790,7 +851,7 @@ class _ExerciseRow extends StatelessWidget {
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
-                exercise.prescription,
+                prescription,
                 style: const TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
@@ -818,7 +879,6 @@ class _ExerciseRow extends StatelessWidget {
       ),
     );
   }
-
 }
 
 // ── 動作替換 Dialog ───────────────────────────────────────────
@@ -845,7 +905,9 @@ class _ReplaceExerciseDialogState extends State<_ReplaceExerciseDialog> {
     if (q.isEmpty) return MovementLibrary.all.toList();
     return MovementLibrary.all
         .where((d) =>
-            d.name.toLowerCase().contains(q) || d.id.contains(q))
+            d.name.toLowerCase().contains(q) ||
+            d.id.contains(q) ||
+            d.englishName.toLowerCase().contains(q))
         .toList();
   }
 

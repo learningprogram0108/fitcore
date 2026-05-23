@@ -1038,34 +1038,16 @@ class _MovementGuidePanel extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 14),
-
-        const Text('核心提示詞',
-            style: TextStyle(
-                fontSize: 9,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 1.5,
-                color: AppTheme.textSecond)),
-        const SizedBox(height: 8),
-        ...data.coreCues.map(
-          (cue) => Padding(
-            padding: const EdgeInsets.only(bottom: 6),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('▸  ',
-                    style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w700,
-                        color: AppTheme.accent)),
-                Expanded(
-                  child: Text(cue,
-                      style: const TextStyle(fontSize: 11, height: 1.5)),
-                ),
-              ],
+        if (data.coreCues.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          _PhaseCard(
+            index: 5,
+            phase: MovementPhase(
+              title: '核心提示詞 (Core Cues)',
+              content: data.coreCues.map((c) => '- $c').join('\n'),
             ),
           ),
-        ),
+        ],
       ],
     );
   }

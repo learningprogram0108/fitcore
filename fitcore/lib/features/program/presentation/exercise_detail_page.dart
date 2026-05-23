@@ -1,10 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../app/theme/app_theme.dart';
 import '../domain/movement_data.dart';
 import '../domain/workout_session_notifier.dart';
+
+// ── Markdown 樣式（與知識庫頁面保持一致）──────────────────────
+MarkdownStyleSheet _detailMdStyle() => MarkdownStyleSheet(
+      p: const TextStyle(fontSize: 13, height: 1.75, color: Color(0xFFCCCCCC)),
+      strong: const TextStyle(fontWeight: FontWeight.w800, color: Colors.white),
+      blockquotePadding: const EdgeInsets.only(left: 12),
+      blockquoteDecoration: const BoxDecoration(
+        border: Border(left: BorderSide(color: AppTheme.accent, width: 3)),
+        color: Color(0xFF1A2010),
+      ),
+      blockquote: TextStyle(
+          color: AppTheme.accent.withValues(alpha: 0.85), fontSize: 12),
+      listBullet: const TextStyle(color: AppTheme.accent),
+      h4: const TextStyle(
+          color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700),
+      code: const TextStyle(
+          backgroundColor: Color(0xFF222222),
+          color: Color(0xFF88CC88),
+          fontSize: 11),
+    );
 
 // ── Route extra ──────────────────────────────────────────────
 class ExerciseExtra {
@@ -593,6 +615,16 @@ class _MovementGuidePanel extends StatelessWidget {
                 index: e.key, phase: e.value, startExpanded: e.key == 0),
           ),
         ),
+        if (data.coreCues.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          _PhaseExpansion(
+            index: 5,
+            phase: MovementPhase(
+              title: '核心提示詞 (Core Cues)',
+              content: data.coreCues.map((c) => '- $c').join('\n'),
+            ),
+          ),
+        ],
       ],
     );
   }
@@ -632,8 +664,11 @@ class _GuideInfoCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 6),
-          Text(content,
-              style: const TextStyle(fontSize: 13, color: Color(0xFFCCCCCC), height: 1.5)),
+          MarkdownBody(
+            data: content,
+            styleSheet: _detailMdStyle(),
+            softLineBreak: true,
+          ),
         ],
       ),
     );
@@ -698,10 +733,10 @@ class _PhaseExpansion extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-            child: Text(
-              phase.content,
-              style: const TextStyle(
-                  fontSize: 13, color: Color(0xFFBBBBBB), height: 1.6),
+            child: MarkdownBody(
+              data: phase.content,
+              styleSheet: _detailMdStyle(),
+              softLineBreak: true,
             ),
           ),
         ],

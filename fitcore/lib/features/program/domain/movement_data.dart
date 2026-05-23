@@ -1,7 +1,8 @@
-// 動作知識庫 — 解剖聚焦、力學特徵、6 階段執行指南、核心提示詞
+// 動作知識庫 — 解剖聚焦、力學特徵、5 階段執行指南、核心提示詞
 // 資料來源：Day 1-4 Movement Bible
 
 import 'muscle_volume.dart';
+import 'prescription_matrix.dart';
 
 class MovementPhase {
   const MovementPhase({required this.title, required this.content});
@@ -19,6 +20,7 @@ class MovementData {
     required this.phases,
     required this.coreCues,
     required this.muscleWeights,
+    required this.category,
   });
   final String id;
   final String name;
@@ -28,6 +30,7 @@ class MovementData {
   final List<MovementPhase> phases;
   final List<String> coreCues;
   final Map<MuscleGroup, double> muscleWeights;
+  final ExerciseCategory category;
 }
 
 class MovementLibrary {
@@ -65,10 +68,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '身體站直，雙膝、髖關節達到完全伸展。此時重力線完美穿過骨骼動力鏈（重力經骨盆直達足底中央）。嚴禁將雙膝過度反張 (Hyperextension) 借力。在頂端執行一次高質量的「清潔呼吸」排出 CO₂，隨後重新壓縮核心、創造外旋扭力，宣告下一次重複的開始。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「建立鋼鐵貨架」（收緊上背）\n「密封的可樂罐」（充盈腹內壓）\n「雙腳旋入地面」（創造外旋扭矩，膝蓋不內扣）\n「電梯垂直下降」（維持中足重心與直立軀幹）',
-        ),
       ],
       coreCues: [
         '「建立鋼鐵貨架」— 收緊上背',
@@ -81,6 +80,7 @@ class MovementLibrary {
         MuscleGroup.posteriorChain: 1.0,
         MuscleGroup.core: 0.5,
       },
+      category: ExerciseCategory.mainCompound,
     ),
 
     'bulgarian': const MovementData(
@@ -110,10 +110,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '前腿完全伸直，身體回到起始的單腳站立中立位。骨盆重回兩側對稱。此時在頂端重新校準重心，微調後腳與前腳的三角關係，重啟腹式呼吸並鎖定核心，切勿在不穩定的狀態下連續盲目執行。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「前腳三角釘死」（建立足底力學根基）\n「向斜後方下沉」（引導正確的髖鉸鏈與負重路徑）\n「用前腳踩碎地板」（專注單側四頭與臀肌驅動）\n「骨盆嚴禁傾斜」（強迫臀中肌與核心等長鎖定）',
-        ),
       ],
       coreCues: [
         '「前腳三角釘死」— 建立足底力學根基',
@@ -125,6 +121,7 @@ class MovementLibrary {
         MuscleGroup.quads: 1.0,
         MuscleGroup.posteriorChain: 1.0,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'farmers_walk': const MovementData(
@@ -154,10 +151,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '抵達終點線或在行進間的每一步頂端，脊椎與頭部始終維持中立延伸，嚴禁含胸駝背。由於大重量壓迫胸腔，此時無法執行深度腹式呼吸，必須在維持核心極高剛性的前提下，進行「高頻率、小口吸吐」的清潔呼吸，以排除高濃度 CO₂，維持神經系統不因缺氧而斷線。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「把肩膀塞進後口袋」（鎖定肩胛，防止關節拉脫）\n「頭頂拉向天花板」（脊椎中立延伸，嚴禁含胸）\n「鋼鐵鋁罐，微步前行」（維持核心動態剛性，步伐細碎且高頻）',
-        ),
       ],
       coreCues: [
         '「把肩膀塞進後口袋」— 鎖定肩胛',
@@ -168,6 +161,7 @@ class MovementLibrary {
         MuscleGroup.core: 0.5,
         MuscleGroup.back: 0.5,
       },
+      category: ExerciseCategory.functionalCore,
     ),
 
     'calf_raise': const MovementData(
@@ -197,10 +191,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '在最高點達到關節鎖定，此時小腿肌肉群呈現極度擁擠的縮短狀態。在最高點死死停頓、瘋狂捏緊小腿 2 秒鐘（頂峰收縮）。保持呼吸，隨後重新校準足底平衡，準備進入下一次 3 秒的緩慢離心。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「雙膝化為鋼鐵」（膝蓋絕不彎曲，強迫腓腸肌吃重）\n「底部死停消除彈性」（停頓2秒，抹殺阿基里斯腱藉力）\n「大拇趾球踩碎地面」（力線對齊，嚴禁扭傷腳踝）\n「頂峰死捏2秒」（壓榨極致的向心收縮）',
-        ),
       ],
       coreCues: [
         '「雙膝化為鋼鐵」— 強迫腓腸肌吃重',
@@ -209,6 +199,7 @@ class MovementLibrary {
         '「頂峰死捏2秒」— 極致向心收縮',
       ],
       muscleWeights: {},
+      category: ExerciseCategory.isolation,
     ),
 
     'copenhagen': const MovementData(
@@ -238,10 +229,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '骨盆與軀幹推至最高點，此時身體從頭、肩、骨盆到上方大腿膝蓋呈一條完美的水平直線，維持鎖定 1 秒鐘。吐氣、重新校準撐地手肘的垂直受力線，再度拉緊核心，準備進入下一反覆。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「內側膝蓋斬斷長椅」（誘發內收肌極限發力）\n「骨盆頂向天花板」（確保完整的抬髖關節位移）\n「身體拒絕彎曲」（死守額狀面中線剛性，嚴禁駝背塌腰）',
-        ),
       ],
       coreCues: [
         '「內側膝蓋斬斷長椅」— 內收肌極限發力',
@@ -251,6 +238,7 @@ class MovementLibrary {
       muscleWeights: {
         MuscleGroup.core: 0.5,
       },
+      category: ExerciseCategory.functionalCore,
     ),
 
     // ─────────────────────── DAY 2 ───────────────────────
@@ -281,10 +269,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '槓鈴推至頂端，雙肘完全伸直鎖定，槓鈴重力線垂直穿過肩關節。此時由骨骼結構承重，嚴禁肩膀往前衝（骨盆與肩胛解耦）。在此執行清潔呼吸，重新收緊肩胛骨，為下一次反覆校準根基。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「肩胛塞進後口袋」（建立推起底座）\n「將槓鈴折彎」（外旋鎖定肩關節，啟動背闊肌）\n「用腳把地板往前推」（啟動下肢驅動傳導）\n「推碎椅墊，肘部相對」（穿過黏滯點與末端鎖定）',
-        ),
       ],
       coreCues: [
         '「肩胛塞進後口袋」— 建立推起底座',
@@ -297,6 +281,7 @@ class MovementLibrary {
         MuscleGroup.frontDelt: 0.5,
         MuscleGroup.triceps: 0.5,
       },
+      category: ExerciseCategory.mainCompound,
     ),
 
     'pullup': const MovementData(
@@ -326,10 +311,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '下巴清晰越過單槓，或胸骨上緣輕觸單槓。此時肩胛骨達到最大幅度的下沉與後收（Retraction）。在頂端頂峰收縮鎖定 0.5 秒。保持呼氣，維持骨盆與中線絕對穩定，隨後平穩進入下一次控制離心。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「雙肩遠離耳朵」（建立主動懸掛，啟動上背）\n「軀幹化為鋼板」（核心繃緊，嚴禁身體晃動）\n「手肘撞擊肋骨」（用背主導，摒除手臂代償）\n「胸骨頂向單槓」（確保完整的背肌向心收縮軌跡）',
-        ),
       ],
       coreCues: [
         '「雙肩遠離耳朵」— 建立主動懸掛',
@@ -342,6 +323,7 @@ class MovementLibrary {
         MuscleGroup.biceps: 0.5,
         MuscleGroup.sideDelt: 0.5,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'ohp': const MovementData(
@@ -371,10 +353,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '槓鈴在頭頂最高點鎖定。雙肘完全伸直，上斜方肌實施強烈的「向上聳肩 (Active Shrug)」，將肩關節盂唇完全鎖死。此時槓鈴、肩、髖、足底中段呈完美的一線幾何結構。在頂端吐氣，並執行一次快速清潔呼吸，重新繃緊屁股，校準中線迎戰下一把。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「大腿收緊，屁股夾死」（鎖定下肢與骨盆，防止凹下背）\n「前臂垂直，手肘向前」（建立完美的推舉力學力臂）\n「越過額頭，藏頭進窗」（微調幾何重心，突破黏滯點）\n「向天花板主動聳肩」（頂端骨骼力學鎖定，保護肩盂唇）',
-        ),
       ],
       coreCues: [
         '「大腿收緊，屁股夾死」— 防止凹下背',
@@ -387,6 +365,7 @@ class MovementLibrary {
         MuscleGroup.triceps: 0.5,
         MuscleGroup.sideDelt: 0.5,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'face_pull': const MovementData(
@@ -416,10 +395,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '在動作終點，雙手把手精確位於雙耳兩側，整個上背部呈現一個完美的「W」字幾何造型。此時肩胛骨達到極限的後收（夾背）與下沉。在終點線強制死鎖、擠壓 1-2 秒鐘。穩定呼吸，隨後平穩放回。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「大拇指朝後抓握」（預導外旋軌跡）\n「脖子打直，嚴禁龜頸」（維持頸椎安全位）\n「雙肘打寬，撕裂繩索」（主導後三角與中背招募）\n「手腕高於手肘，極限夾背2秒」（強迫旋轉肌群外旋與頂峰收縮）',
-        ),
       ],
       coreCues: [
         '「大拇指朝後抓握」— 預導外旋軌跡',
@@ -431,6 +406,7 @@ class MovementLibrary {
         MuscleGroup.sideDelt: 1.0,
         MuscleGroup.back: 0.5,
       },
+      category: ExerciseCategory.isolation,
     ),
 
     'triceps_pushdown': const MovementData(
@@ -460,10 +436,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '在最低點（肘關節接近完全伸直），繩索兩端向兩側分開，三頭肌達到極限縮短狀態。強制執行「頂峰收縮死鎖 1-2 秒」，瘋狂擠壓三頭肌，製造極大化的代謝壓力與肌泵感。穩定呼氣，重新校準肘部位置，隨後平穩進入下一次控制離心。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「上臂死貼肋骨，嚴禁外飄」（分離肩關節代償，確保三頭肌孤立發力）\n「用肘往下捅穿地板」（三頭肌爆發性向心收縮）\n「繩子向兩側撕開，底部擠壓2秒」（頂峰收縮壓榨極致代謝張力）\n「緩慢回放，對抗繩索」（離心拉長肌肥大訊號）',
-        ),
       ],
       coreCues: [
         '「上臂死貼肋骨，嚴禁外飄」— 三頭肌孤立',
@@ -474,6 +446,7 @@ class MovementLibrary {
       muscleWeights: {
         MuscleGroup.triceps: 1.0,
       },
+      category: ExerciseCategory.isolation,
     ),
 
     // ─────────────────────── DAY 3 ───────────────────────
@@ -504,10 +477,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '身體完全站直，雙膝、雙髖完全伸直。臀大肌強力向心收縮鎖死。嚴禁為了追求鎖定而將腰椎向後過度拱背（Hyperextension），這會產生致命的椎間盤擠壓。在頂端挺胸，執行一次清潔呼吸，重新鎖定肩胛貨架，迎接下一次反覆。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「把把手捏碎，拉緊拉力線」（預先收緊上背與手臂張力）\n「用雙腿踩穿地板」（摒除下背發力，改由下肢驅動起槓）\n「撕裂地面，臀部前推」（過膝後強烈伸髖鎖定）',
-        ),
       ],
       coreCues: [
         '「把把手捏碎，拉緊拉力線」— 收緊上背張力',
@@ -520,6 +489,7 @@ class MovementLibrary {
         MuscleGroup.back: 0.5,
         MuscleGroup.core: 0.5,
       },
+      category: ExerciseCategory.mainCompound,
     ),
 
     'zercher': const MovementData(
@@ -549,10 +519,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '身體完全站直，關節骨骼力學鎖定。由於槓鈴壓迫胸腔且核心極度緊繃，在此執行一次快速的「補氣/清潔呼吸」，切勿完全放鬆核心。重新確認肘彎緊貼肋骨，校準上背貨架，宣告下一次反覆。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「雙肘抱緊，死貼肋骨」（防止槓鈴滑脫，鎖定力矩）\n「用胸骨去撞天花板」（強迫上背與挺胸主導向心推起）\n「鋁罐剛性，屁股嚴禁先抬」（防止早安蹲代償，保護腰椎）',
-        ),
       ],
       coreCues: [
         '「雙肘抱緊，死貼肋骨」— 鎖定力矩',
@@ -564,6 +530,7 @@ class MovementLibrary {
         MuscleGroup.core: 1.0,
         MuscleGroup.posteriorChain: 0.5,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'nordic': const MovementData(
@@ -593,10 +560,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '身體回到 90 度垂直跪姿。重新檢查骨盆是否有前傾或折髖。在大重量離心後，進行均勻呼吸，重新拉緊核心，校準鋼板外殼。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「屁股夾死，化身鋼板」（嚴禁折髖翹屁股舞弊）\n「用大腿後側死命抵抗地球」（壓榨高密度的離心張力）\n「輕微助推，後側咬緊拉回」（純粹用屈膝力量主導向心）',
-        ),
       ],
       coreCues: [
         '「屁股夾死，化身鋼板」— 嚴禁折髖',
@@ -606,6 +569,7 @@ class MovementLibrary {
       muscleWeights: {
         MuscleGroup.posteriorChain: 1.0,
       },
+      category: ExerciseCategory.isolation,
     ),
 
     'rdl': const MovementData(
@@ -635,10 +599,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '身體回到單腳站立的垂直中立位，持重側臀肌強力收緊鎖定。在頂端重新校準足底三角的重心分配，調勻呼吸，核心重新 Bracing，再進入下一次反覆。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「後腳化為長槍向後刺」（確保軀幹與後腳呈天平式連動）\n「把屁股往後方的牆壁推」（引導正確的單側髖鉸鏈路徑）\n「踩穿地板，屁股嚴禁翻開」（強迫臀中肌鎖死骨盆水平面）',
-        ),
       ],
       coreCues: [
         '「後腳化為長槍向後刺」— 天平式連動',
@@ -648,6 +608,7 @@ class MovementLibrary {
       muscleWeights: {
         MuscleGroup.posteriorChain: 1.0,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'leg_curl': const MovementData(
@@ -677,10 +638,6 @@ class MovementLibrary {
           title: '最低點轉換期 / 伸展與反轉 (Amortization Phase)',
           content: '當雙腿幾乎完全伸直（膝關節接近完全鎖定，但仍維持 5 度微彎以保留安全張力）的頂端拉伸點時，達到轉換期。此時預拉伸的肌肥大訊號達到最高。嚴禁配重片在底部撞擊轟鳴（這代表張力洩漏）。在不失張力的前提下，順應伸展反射，立刻再次起爆向心下拉。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「骨盆釘死，嚴禁滑動」（強迫大腿墊發揮完全外殼鎖定作用）\n「腳跟往屁股深處摳」（專注膝屈發力軌跡）\n「緩慢回放，拉長後側」（壓榨拉長狀態下的離心肌肥大訊號）',
-        ),
       ],
       coreCues: [
         '「骨盆釘死，嚴禁滑動」— 大腿墊外殼鎖定',
@@ -690,6 +647,7 @@ class MovementLibrary {
       muscleWeights: {
         MuscleGroup.posteriorChain: 1.0,
       },
+      category: ExerciseCategory.isolation,
     ),
 
     // ─────────────────────── DAY 4 ───────────────────────
@@ -720,10 +678,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '胸口下緣輕觸槓鈴。此時肩胛骨達到最大幅度的後收與下沉，上背部徹底夾緊。在頂端頂峰收縮強制鎖定 1 秒鐘。穩定呼氣，重新確認骨盆與下肢呈一直線，校準中線，準備迎接下一次控制離心。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「身體繃成鋼板，嚴禁下榻」（死守核心剛性）\n「手肘向後撞擊地面」（用背主導，摒除手臂代償）\n「胸口貼槓，夾緊肩胛骨」（壓榨中背厚度與向心極限）',
-        ),
       ],
       coreCues: [
         '「身體繃成鋼板，嚴禁下榻」— 核心剛性',
@@ -735,6 +689,7 @@ class MovementLibrary {
         MuscleGroup.sideDelt: 0.5,
         MuscleGroup.biceps: 0.5,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'incline_press': const MovementData(
@@ -764,10 +719,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '啞鈴在頂端鎖定，雙肘伸直，前臂垂直地面。注意：兩顆啞鈴在最高點嚴禁相互撞擊轟鳴（撞擊會導致肌肉瞬間卸力）。在頂端收緊胸肌，進行一次呼吸重置，為下一次反覆校準根基。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「肩胛夾死，腳掌蹬地」（建立推起貨架）\n「肘關節呈45度自然下放」（杜絕肩峰夾擠）\n「前臂垂直，用雙肘內側夾緊胸肌」（突破黏滯點與末端鎖定）',
-        ),
       ],
       coreCues: [
         '「肩胛夾死，腳掌蹬地」— 建立推起貨架',
@@ -779,6 +730,7 @@ class MovementLibrary {
         MuscleGroup.frontDelt: 0.5,
         MuscleGroup.triceps: 0.5,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'lat_pulldown': const MovementData(
@@ -808,10 +760,6 @@ class MovementLibrary {
           title: '最低點轉換期 / 伸展與反轉 (Amortization Phase)',
           content: '橫槓回到最頂端，雙臂完全伸直，背闊肌處於拉長極限點。配重片在底部嚴禁落地撞擊（這會洩漏張力）。咬住最低過渡點的肌肉緊繃感，順應伸展反射，立刻重啟下一次向心下拉。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「大腿死壓固定墊」（分離核心代償）\n「手肘向身體兩側砸下」（摒除二頭肌死拉代償）\n「底部夾緊停頓，回放慢速拉長」（壓榨滿行程機械張力）',
-        ),
       ],
       coreCues: [
         '「大腿死壓固定墊」— 分離核心代償',
@@ -823,6 +771,7 @@ class MovementLibrary {
         MuscleGroup.biceps: 0.5,
         MuscleGroup.sideDelt: 0.5,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'dips': const MovementData(
@@ -852,10 +801,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '身體推回最高點，雙肘完全伸直鎖定。雙肩主動下沉、遠離耳朵（前鋸肌強力下壓肩胛）。在頂端呼氣，重啟腹內壓 Bracing，校準外旋力矩，迎戰下一把重複。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「手掌外旋扭轉把手，鎖死肩膀」（建立安全的肩關節盂唇空間）\n「身體前傾30度，手肘向後折」（特化胸下緣力臂）\n「雙肩遠離耳朵，手掌向下推碎雙槓」（頂端骨骼幾何鎖定）',
-        ),
       ],
       coreCues: [
         '「手掌外旋扭轉把手，鎖死肩膀」— 肩關節安全',
@@ -867,6 +812,7 @@ class MovementLibrary {
         MuscleGroup.frontDelt: 0.5,
         MuscleGroup.triceps: 0.5,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'trx_plank': const MovementData(
@@ -896,10 +842,6 @@ class MovementLibrary {
           title: '鎖定與恢復階段 (Lockout & Reset)',
           content: '身體重回完美的水平對稱平板位（密封鋁罐狀態）。由於核心承受著極高密度的代謝壓力，此時嚴禁完全憋氣（會引發血壓驟升），必須執行「高頻率、小口短促的清潔呼吸」。在維持密封剛性的前提下排出 CO₂，直到 45 秒結束，緩慢跪地重置。',
         ),
-        MovementPhase(
-          title: '核心提示詞 (Core Cues)',
-          content: '「前臂向下壓碎地板，頂起上背」（根除翼狀肩胛）\n「屁股夾死，腹部往內吸緊」（防止凹下背與腰椎剪力）\n「身體化身鋼鐵鋁罐，拒絕晃動塌腰」（深層腹橫肌剛性轟炸）',
-        ),
       ],
       coreCues: [
         '「前臂向下壓碎地板，頂起上背」— 根除翼狀肩胛',
@@ -909,6 +851,7 @@ class MovementLibrary {
       muscleWeights: {
         MuscleGroup.core: 1.0,
       },
+      category: ExerciseCategory.functionalCore,
     ),
 
     // ─────────────────────── 進階動作庫 ───────────────────────
@@ -949,6 +892,7 @@ class MovementLibrary {
         MuscleGroup.core: 1.0,
         MuscleGroup.sideDelt: 0.3,
       },
+      category: ExerciseCategory.functionalCore,
     ),
 
     'pushup_plus': const MovementData(
@@ -990,6 +934,7 @@ class MovementLibrary {
         MuscleGroup.triceps: 0.5,
         MuscleGroup.core: 0.3,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'deadlift': const MovementData(
@@ -1030,6 +975,7 @@ class MovementLibrary {
         MuscleGroup.back: 0.5,
         MuscleGroup.quads: 0.3,
       },
+      category: ExerciseCategory.mainCompound,
     ),
 
     'sumo_deadlift': const MovementData(
@@ -1070,6 +1016,7 @@ class MovementLibrary {
         MuscleGroup.posteriorChain: 0.7,
         MuscleGroup.back: 0.3,
       },
+      category: ExerciseCategory.mainCompound,
     ),
 
     'cossack_squat': const MovementData(
@@ -1109,6 +1056,7 @@ class MovementLibrary {
         MuscleGroup.quads: 0.8,
         MuscleGroup.posteriorChain: 0.5,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'single_arm_row': const MovementData(
@@ -1149,6 +1097,7 @@ class MovementLibrary {
         MuscleGroup.biceps: 0.5,
         MuscleGroup.core: 0.3,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'turkish_getup': const MovementData(
@@ -1189,6 +1138,7 @@ class MovementLibrary {
         MuscleGroup.core: 0.8,
         MuscleGroup.posteriorChain: 0.3,
       },
+      category: ExerciseCategory.functionalCore,
     ),
 
     'hip_thrust': const MovementData(
@@ -1227,6 +1177,7 @@ class MovementLibrary {
       muscleWeights: {
         MuscleGroup.posteriorChain: 1.0,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'hanging_leg_raise': const MovementData(
@@ -1265,6 +1216,7 @@ class MovementLibrary {
       muscleWeights: {
         MuscleGroup.core: 1.0,
       },
+      category: ExerciseCategory.isolation,
     ),
 
     'landmine_press': const MovementData(
@@ -1306,6 +1258,7 @@ class MovementLibrary {
         MuscleGroup.triceps: 0.3,
         MuscleGroup.core: 0.3,
       },
+      category: ExerciseCategory.auxiliaryCompound,
     ),
 
     'reverse_sled': const MovementData(
@@ -1344,6 +1297,7 @@ class MovementLibrary {
       muscleWeights: {
         MuscleGroup.quads: 1.0,
       },
+      category: ExerciseCategory.functionalCore,
     ),
   };
 }
