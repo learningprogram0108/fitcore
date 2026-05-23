@@ -13,6 +13,7 @@ class MovementData {
   const MovementData({
     required this.id,
     required this.name,
+    this.englishName = '',
     required this.anatomyFocus,
     required this.mechanics,
     required this.phases,
@@ -21,6 +22,7 @@ class MovementData {
   });
   final String id;
   final String name;
+  final String englishName; // 英文名稱（用於搜尋，不顯示在課表）
   final String anatomyFocus;
   final String mechanics;
   final List<MovementPhase> phases;
@@ -39,8 +41,9 @@ class MovementLibrary {
     'squat': const MovementData(
       id: 'squat',
       name: '槓鈴背蹲舉（高背槓）',
-      anatomyFocus: '股四頭肌（主）、臀大肌（主）、大收肌（主） / 腿後肌群（輔）、豎脊肌（輔）',
-      mechanics: '槓鈴位於斜方肌上部，縮短了髖部阻力臂並拉長膝部阻力臂，重力線必須垂直穿過足底中段 (Mid-foot)。',
+      englishName: 'High-Bar Back Squat',
+      anatomyFocus: '**主動肌**：股四頭肌、臀大肌、大收肌\n**輔助肌**：腿後肌群、豎脊肌',
+      mechanics: '槓鈴位於斜方肌上部，縮短了髖部阻力臂並拉長膝部阻力臂，重力線必須垂直穿過**足底中段（Mid-foot）**。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -83,8 +86,9 @@ class MovementLibrary {
     'bulgarian': const MovementData(
       id: 'bulgarian',
       name: '保加利亞分腿蹲',
-      anatomyFocus: '股四頭肌（主）、臀大肌（主） / 臀中肌（額狀面主動穩定）、內收肌群（輔）',
-      mechanics: '單側閉鎖鏈推力動作。消除了雙側大重量對脊椎的絕對軸向壓縮，強迫骨盆兩側的穩定肌群進行高強度抗側屈、抗旋轉。',
+      englishName: 'Bulgarian Split Squat',
+      anatomyFocus: '**主動肌**：股四頭肌、臀大肌\n**輔助肌**：臀中肌（額狀面主動穩定）、內收肌群',
+      mechanics: '單側閉鎖鏈推力動作。消除了雙側大重量對脊椎的絕對**軸向壓縮**，強迫骨盆兩側的穩定肌群進行高強度**抗側屈、抗旋轉**。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -126,8 +130,9 @@ class MovementLibrary {
     'farmers_walk': const MovementData(
       id: 'farmers_walk',
       name: '農夫走路',
-      anatomyFocus: '核心肌群（主）、斜方肌群（主）、菱形肌（主）、前臂屈肌群（主/握力） / 肱二頭肌（等長抗拉）',
-      mechanics: '高噸位加載試圖拉塌肩胛骨、並在跨步時摧毀骨盆平衡。是極致的等長收縮剛性與額狀面抗側屈功能性特化訓練。',
+      englishName: "Farmer's Walk",
+      anatomyFocus: '**主動肌**：核心肌群、斜方肌群、菱形肌、前臂屈肌群（握力）\n**輔助肌**：肱二頭肌（等長抗拉）',
+      mechanics: '高噸位加載試圖拉塌肩胛骨、並在跨步時摧毀骨盆平衡。是極致的**等長收縮剛性**與**額狀面抗側屈**功能性特化訓練。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -168,8 +173,9 @@ class MovementLibrary {
     'calf_raise': const MovementData(
       id: 'calf_raise',
       name: '站姿提踵',
-      anatomyFocus: '小腿腓腸肌（主 - 雙關節肌特化） / 比目魚肌（輔）、足底韌帶與肌腱剛性',
-      mechanics: '在膝關節完全伸直的幾何狀態下，小腿腓腸肌的起點與止點被拉至最長。此時施加重載，能觸發極強的拉長狀態下增肌效應 (Stretch-mediated hypertrophy)。',
+      englishName: 'Standing Calf Raise',
+      anatomyFocus: '**主動肌**：小腿腓腸肌（雙關節肌特化）\n**輔助肌**：比目魚肌、足底韌帶與肌腱剛性',
+      mechanics: '在膝關節完全伸直的幾何狀態下，小腿腓腸肌的起點與止點被拉至最長。此時施加重載，能觸發極強的**拉長狀態下增肌效應（Stretch-mediated hypertrophy）**。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -208,8 +214,9 @@ class MovementLibrary {
     'copenhagen': const MovementData(
       id: 'copenhagen',
       name: '哥本哈根側平舉',
-      anatomyFocus: '大腿內收肌群（主 - 大收肌/長收肌/股薄肌）、腹內斜肌/腹外斜肌（主）、腰方肌（主）',
-      mechanics: '極致的額狀面剪力對抗動作。特化大腿內收肌群在拉長與縮短範圍下的絕對力量。大收肌是深蹲底部的伸髖主力，強化它能直接反哺你的深蹲與硬舉實力。',
+      englishName: 'Copenhagen Adduction',
+      anatomyFocus: '**主動肌**：大腿內收肌群（大收肌、長收肌、股薄肌）、腹內/外斜肌、腰方肌',
+      mechanics: '極致的**額狀面剪力對抗**動作。特化大腿內收肌群在拉長與縮短範圍下的絕對力量。**大收肌是深蹲底部的伸髖主力**，強化它能直接反哺深蹲與硬舉實力。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -250,8 +257,9 @@ class MovementLibrary {
     'bench': const MovementData(
       id: 'bench',
       name: '槓鈴臥推',
-      anatomyFocus: '胸大肌（主）、肩部前三角肌（主） / 肱三頭肌（主/鎖定階段）、背闊肌（等長穩定）',
-      mechanics: '水平推力動作。透過拱背縮短阻力臂，並利用腳步驅動（Leg Drive）將下肢力量經由剛性軀幹傳導至上肢發力底座。',
+      englishName: 'Barbell Bench Press',
+      anatomyFocus: '**主動肌**：胸大肌、肩部前三角肌、肱三頭肌（鎖定階段）\n**輔助肌**：背闊肌（等長穩定）',
+      mechanics: '水平推力動作。透過**拱背**縮短阻力臂，並利用**腿部驅動（Leg Drive）**將下肢力量經由剛性軀幹傳導至上肢發力底座。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -294,8 +302,9 @@ class MovementLibrary {
     'pullup': const MovementData(
       id: 'pullup',
       name: '正手寬握引體向上',
-      anatomyFocus: '背部闊背肌（主）、大圓肌（主）、後三角肌（主） / 肱二頭肌（輔）、中下斜方肌（主/肩胛收縮）',
-      mechanics: '垂直拉力的閉鎖式動力鏈（CKC）王牌動作。藉由正手寬握限制肘關節屈曲，大幅減少手臂代償，迫使背闊肌外側與上背肌群承載身體全重，特化背部寬度。',
+      englishName: 'Pronated Wide-Grip Pull-Up',
+      anatomyFocus: '**主動肌**：背闊肌、大圓肌、後三角肌、中下斜方肌（肩胛收縮）\n**輔助肌**：肱二頭肌',
+      mechanics: '垂直拉力的**閉鎖式動力鏈（CKC）**王牌動作。藉由正手寬握限制肘關節屈曲，大幅減少手臂代償，迫使**背闊肌外側**與上背肌群承載身體全重，特化背部寬度。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -338,8 +347,9 @@ class MovementLibrary {
     'ohp': const MovementData(
       id: 'ohp',
       name: '槓鈴肩推',
-      anatomyFocus: '三角肌（主 - 前/中束特化）、肱三頭肌（主/鎖定階段） / 上斜方肌（等長與末端鎖定）、核心肌群（中軸剛性等長收縮）',
-      mechanics: '大重量站姿垂直推動作。根據 Mark Rippetoe 的幾何力學，槓鈴重力線在動作起點與終點都必須與中足（Mid-foot）完美對齊。',
+      englishName: 'Overhead Press',
+      anatomyFocus: '**主動肌**：三角肌前/中束、肱三頭肌（鎖定階段）\n**輔助肌**：上斜方肌（末端鎖定）、核心肌群（中軸剛性等長收縮）',
+      mechanics: '大重量站姿垂直推動作。根據 Mark Rippetoe 的幾何力學，槓鈴重力線在動作起點與終點都必須與**中足（Mid-foot）**完美對齊。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -382,8 +392,9 @@ class MovementLibrary {
     'face_pull': const MovementData(
       id: 'face_pull',
       name: '滑輪面拉',
-      anatomyFocus: '肩部後三角肌（主）、中下斜方肌（主）、菱形肌（主） / 旋轉肌群（岡下肌/小圓肌 - 外旋特化）',
-      mechanics: '兼具水平拉與動態外旋（External Rotation）的功能性動作。專治長期的含胸駝背，為大重量臥推與肩推建立極致的肩胛後側平衡。',
+      englishName: 'Cable Face Pull',
+      anatomyFocus: '**主動肌**：後三角肌、中下斜方肌、菱形肌\n**特化**：旋轉肌群（岡下肌/小圓肌）外旋訓練',
+      mechanics: '兼具**水平拉**與**動態外旋（External Rotation）**的功能性動作。專治長期的含胸駝背，為大重量臥推與肩推建立極致的肩胛後側平衡。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -425,8 +436,9 @@ class MovementLibrary {
     'triceps_pushdown': const MovementData(
       id: 'triceps_pushdown',
       name: '滑輪三頭下壓',
-      anatomyFocus: '肱三頭肌（主 - 涵蓋長頭/外側頭/內側頭全面特化） / 肘肌（輔）',
-      mechanics: '單關節、肘主導（Elbow Extension）的肱三頭肌孤立動作。透過繩索的持續恆定張力，在整個關節角度範圍內對三頭肌施加均勻的機械張力。底部的頂峰收縮可壓榨極致的代謝壓力，為臥推與肩推的鎖定力量奠定基礎。',
+      englishName: 'Cable Triceps Pushdown',
+      anatomyFocus: '**主動肌**：肱三頭肌（長頭、外側頭、內側頭全面特化）\n**輔助肌**：肘肌',
+      mechanics: '單關節、**肘主導（Elbow Extension）**的肱三頭肌孤立動作。透過繩索的持續恆定張力，在整個關節角度範圍內施加均勻的機械張力。底部**頂峰收縮**可壓榨極致的代謝壓力，為臥推與肩推的鎖定力量奠定基礎。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -468,8 +480,9 @@ class MovementLibrary {
     'hex_deadlift': const MovementData(
       id: 'hex_deadlift',
       name: '六角槓硬舉',
-      anatomyFocus: '股四頭肌（主）、臀大肌（主）、背部豎脊肌（主） / 腿後肌群（輔）、腹拉型核心（輔）',
-      mechanics: '結合深蹲與硬舉幾何的複合鉸鏈動作。重力線直接穿過中足與身體中心，相比傳統直槓硬舉，大幅縮短了腰椎的剪力力臂（Shear Moment Arm），允許中樞神經以最高功率驅動下肢伸髖。',
+      englishName: 'Hex Bar Deadlift',
+      anatomyFocus: '**主動肌**：股四頭肌、臀大肌、背部豎脊肌\n**輔助肌**：腿後肌群、核心肌群',
+      mechanics: '結合深蹲與硬舉幾何的複合鉸鏈動作。重力線直接穿過中足與身體中心，相比傳統直槓硬舉，大幅縮短了腰椎的**剪力力臂（Shear Moment Arm）**，允許中樞神經以最高功率驅動下肢伸髖。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -512,8 +525,9 @@ class MovementLibrary {
     'zercher': const MovementData(
       id: 'zercher',
       name: '澤奇深蹲',
-      anatomyFocus: '股四頭肌（主）、核心肌群（主 - 抗屈曲特化）、背部上背肌群（主 - 斜方肌/菱形肌） / 臀大肌（輔）、肱二頭肌（等長抗拉輔）',
-      mechanics: '極致的功能性前載荷（Front-loaded）深蹲。槓鈴架設於雙肘肘彎，重力極度試圖將你的胸椎與腰椎拉向「屈曲（駝背）」。這迫使整個後側豎脊肌與前側核心產生無與倫比的等長剛性收縮。',
+      englishName: 'Zercher Squat',
+      anatomyFocus: '**主動肌**：股四頭肌、核心肌群（抗屈曲特化）、上背肌群（斜方肌/菱形肌）\n**輔助肌**：臀大肌、肱二頭肌（等長抗拉）',
+      mechanics: '極致的**前載荷（Front-loaded）**深蹲。槓鈴架設於雙肘肘彎，重力極度試圖將胸椎與腰椎拉向「屈曲（駝背）」。這迫使整個後側豎脊肌與前側核心產生**無與倫比的等長剛性收縮**。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -555,12 +569,13 @@ class MovementLibrary {
     'nordic': const MovementData(
       id: 'nordic',
       name: '北歐腿彎舉（奇數週）',
-      anatomyFocus: '腿後肌群（主 - 半腱肌/半膜肌/股二頭肌長短頭）、核心肌群（等長剛性維持）',
-      mechanics: '單關節、膝主導（Knee Flexion）的純離心特化動作。在肌肉被強行拉長的極限狀態下注入極高密度的機械張力，是體能界公認強化後側鏈並杜絕受傷的神級動作。',
+      englishName: 'Nordic Hamstring Curl',
+      anatomyFocus: '**主動肌**：腿後肌群（半腱肌、半膜肌、股二頭肌長短頭）\n**穩定肌**：核心肌群（等長剛性維持）',
+      mechanics: '單關節、**膝主導（Knee Flexion）**的純**離心特化**動作。在肌肉被強行拉長的極限狀態下注入極高密度的機械張力，是體能界公認強化後側鏈並杜絕受傷的**神級動作**。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
-          content: '雙膝跪在厚實的軟墊上，雙腳踝必須被固定器、沉重槓鈴或夥伴的雙手死死鎖定在地面。軀幹從頭頂、脊椎、骨盆到膝蓋呈 90 度垂直於地面。\n\n張力創造：【核心最關鍵設定】：強力夾緊屁股（骨盆維持中立，嚴禁屈髖或翹屁股），腹肌同時內收鎖死。將整個上半身與大腿整合成一塊「絕對無法彎曲的剛性鋼板」，大腿後側肌群預先咬住等長張力。',
+          content: '雙膝跪在厚實的軟墊上，雙腳踝必須被固定器、沉重槓鈴或夥伴的雙手死死鎖定在地面。軀幹從頭頂、脊椎、骨盆到膝蓋呈 90 度垂直於地面。\n\n張力創造：\n\n**核心最關鍵設定**：強力夾緊屁股（骨盆維持中立，嚴禁屈髖或翹屁股），腹肌同時內收鎖死。將整個上半身與大腿整合成一塊「絕對無法彎曲的剛性鋼板」，大腿後側肌群預先咬住等長張力。',
         ),
         MovementPhase(
           title: '離心收縮階段 / 下放 (Eccentric Phase)',
@@ -596,8 +611,9 @@ class MovementLibrary {
     'rdl': const MovementData(
       id: 'rdl',
       name: '單腿羅馬尼亞硬舉（偶數週）',
-      anatomyFocus: '腿後肌群（主 - 伸髖主導）、臀大肌（主） / 臀中肌（單側額狀面骨盆穩定）、核心肌群（輔）',
-      mechanics: '單側、髖主導（Hip Extension）的功能性鉸鏈動作。在閉鎖鏈狀態下對單側後側鏈進行深度拉伸肌肥大，同時對單側腳掌的「足底三角」平衡提出極高挑戰。',
+      englishName: 'Single-Leg Romanian Deadlift',
+      anatomyFocus: '**主動肌**：腿後肌群（伸髖主導）、臀大肌\n**穩定肌**：臀中肌（單側額狀面骨盆穩定）、核心肌群',
+      mechanics: '單側、**髖主導（Hip Extension）**的功能性鉸鏈動作。在閉鎖鏈狀態下對單側後側鏈進行**深度拉伸肌肥大**，同時對單側腳掌的「**足底三角**」平衡提出極高挑戰。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -637,12 +653,13 @@ class MovementLibrary {
     'leg_curl': const MovementData(
       id: 'leg_curl',
       name: '坐姿腿彎舉',
-      anatomyFocus: '腿後肌群（主 - 涵蓋股二頭肌、半腱肌、半膜肌特化） / 比目魚肌（輔）',
-      mechanics: '單關節、膝主導（Knee Flexion）的孤立動作。由於採用坐姿，髖關節處於約 90 度屈曲狀態，這會將腿後肌群的骨盆起點預先拉長。在此狀態下進行負重屈膝，能觸發極其強烈的「拉長狀態下伸展肌肥大（Stretch-mediated hypertrophy）」，效果完勝趴姿腿彎舉。',
+      englishName: 'Seated Leg Curl',
+      anatomyFocus: '**主動肌**：腿後肌群（股二頭肌、半腱肌、半膜肌全面特化）\n**輔助肌**：比目魚肌',
+      mechanics: '單關節、**膝主導（Knee Flexion）**的孤立動作。由於採用坐姿，髖關節處於約90度屈曲狀態，腿後肌群的骨盆起點被**預先拉長**。在此狀態下進行負重屈膝，能觸發極其強烈的**拉長狀態下伸展肌肥大（Stretch-mediated hypertrophy）**，效果完勝趴姿腿彎舉。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
-          content: '緊貼椅背坐深。調整後側滾筒軸線，使其精確安放在阿基里斯腱（腳踝後側）上方。【最核心力學架設】：將機器上方的骨盆/大腿固定墊死死、極度緊繃地向下壓鎖在大腿股四頭肌上。\n\n張力創造：雙手死死抓緊座椅兩側的把手，主動將骨盆與下背部往後、往下「釘」在椅背上。本動作由頂端拉長狀態開始，發力循環由向心階段首發。',
+          content: '緊貼椅背坐深。調整後側滾筒軸線，使其精確安放在阿基里斯腱（腳踝後側）上方。\n\n**最核心力學架設**：將機器上方的骨盆/大腿固定墊死死、極度緊繃地向下壓鎖在大腿股四頭肌上。\n\n張力創造：雙手死死抓緊座椅兩側的把手，主動將骨盆與下背部往後、往下「釘」在椅背上。本動作由頂端拉長狀態開始，發力循環由向心階段首發。',
         ),
         MovementPhase(
           title: '向心收縮階段 / 下拉 (Concentric Phase)',
@@ -679,8 +696,9 @@ class MovementLibrary {
     'inverted_row': const MovementData(
       id: 'inverted_row',
       name: '仰臥划船',
-      anatomyFocus: '中下斜方肌（主）、菱形肌（主）、後三角肌（主） / 肱二頭肌（輔）、闊背肌（輔）',
-      mechanics: '水平拉力的閉鎖式動力鏈（CKC）動作。與開放式動力鏈（OKC）的滑輪划船不同，仰臥划船要求整個身體做等長平板支撐，將力量從足底經由核心傳導至肩胛骨，特化背部厚度，並提供前一天澤奇深蹲後的二頭肌腱與肘關節安全過渡。',
+      englishName: 'Inverted Row',
+      anatomyFocus: '**主動肌**：中下斜方肌、菱形肌、後三角肌\n**輔助肌**：肱二頭肌、背闊肌',
+      mechanics: '水平拉力的**閉鎖式動力鏈（CKC）**動作。要求整個身體做**等長平板支撐**，將力量從足底經由核心傳導至肩胛骨，特化背部厚度，並提供二頭肌腱與肘關節的安全過渡。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -722,8 +740,9 @@ class MovementLibrary {
     'incline_press': const MovementData(
       id: 'incline_press',
       name: '啞鈴上斜臥推',
-      anatomyFocus: '胸大肌上部/鎖骨頭（主）、肩部前三角肌（主） / 肱三頭肌（輔）',
-      mechanics: '上斜推力動作。長椅角度設定於 30 度（過高會變成全肩推），此幾何角度拉長了胸大肌上部的鎖骨端纖維力臂。啞鈴的自由度允許腕與肘關節在疲勞時進行動態幾何微調，對肩關節盂唇極其友善。',
+      englishName: 'Dumbbell Incline Press',
+      anatomyFocus: '**主動肌**：胸大肌上部（鎖骨頭）、肩部前三角肌\n**輔助肌**：肱三頭肌',
+      mechanics: '上斜推力動作。長椅角度設定於**30度**（過高會變成全肩推），此幾何角度拉長了胸大肌上部的鎖骨端纖維力臂。啞鈴的自由度允許腕與肘關節進行**動態幾何微調**，對肩關節盂唇極其友善。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -765,8 +784,9 @@ class MovementLibrary {
     'lat_pulldown': const MovementData(
       id: 'lat_pulldown',
       name: '寬握滑輪下拉',
-      anatomyFocus: '背部闊背肌大範圍纖維（主）、大圓肌（主） / 肱二頭肌（輔）、中下斜方肌（輔）',
-      mechanics: '垂直拉力的開放式動力鏈（OKC）動作。作為 Day 2 引體向上的「降載優化」，透過寬握與大腿固定墊鎖定下肢，徹底分離核心搖晃代償，利用大位移精準刻劃背部寬度。',
+      englishName: 'Wide-Grip Lat Pulldown',
+      anatomyFocus: '**主動肌**：背闊肌（大範圍纖維）、大圓肌\n**輔助肌**：肱二頭肌、中下斜方肌',
+      mechanics: '垂直拉力的**開放式動力鏈（OKC）**動作。作為引體向上的「降載優化」，透過寬握與大腿固定墊鎖定下肢，徹底分離核心搖晃代償，利用大位移精準刻劃**背部寬度**。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -808,8 +828,9 @@ class MovementLibrary {
     'dips': const MovementData(
       id: 'dips',
       name: '雙槓撐體',
-      anatomyFocus: '胸大肌下部（主）、肩部前三角肌（主）、肱三頭肌（主/鎖定階段） / 前鋸肌（肩胛等長穩定）',
-      mechanics: '上肢推力的閉鎖式動力鏈（CKC）神級動作。身體懸空移動，對肩關節胸前帶提出極高的動態穩定要求。透過軀幹角度調整可直接轉移受力力臂。',
+      englishName: 'Dips',
+      anatomyFocus: '**主動肌**：胸大肌下部、肩部前三角肌、肱三頭肌（鎖定階段）\n**穩定肌**：前鋸肌（肩胛等長穩定）',
+      mechanics: '上肢推力的**閉鎖式動力鏈（CKC）**神級動作。身體懸空移動，對肩關節胸前帶提出極高的**動態穩定**要求。透過**軀幹前傾角度**調整可直接轉移胸肌下部受力力臂。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -817,7 +838,7 @@ class MovementLibrary {
         ),
         MovementPhase(
           title: '離心收縮階段 / 下放 (Eccentric Phase)',
-          content: '雙肘解鎖，身體控制下降（耗時 2-3 秒）。【胸肌特化幾何設定】：下放時，軀幹主動前傾約 30 度，雙肘自然向後彎曲（嚴禁雙肘向兩側炸開）。這個前傾角度會拉長胸大肌下部的阻力臂，使胸大肌下緣與三角肌前束承受巨大的離心機械張力。',
+          content: '雙肘解鎖，身體控制下降（耗時 2-3 秒）。\n\n**胸肌特化幾何設定**：下放時，軀幹主動前傾約 30 度，雙肘自然向後彎曲（嚴禁雙肘向兩側炸開）。這個前傾角度會拉長胸大肌下部的阻力臂，使胸大肌下緣與三角肌前束承受巨大的離心機械張力。',
         ),
         MovementPhase(
           title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
@@ -851,8 +872,9 @@ class MovementLibrary {
     'trx_plank': const MovementData(
       id: 'trx_plank',
       name: 'TRX 平板撐',
-      anatomyFocus: '核心肌群（主 - 腹直肌/腹橫肌/腹內外斜肌/多裂肌）、前鋸肌（等長主動推地）',
-      mechanics: '【終極核心終結技】。將雙腳懸吊在 TRX 的不穩定表面上。這種微小的晃動會迫使大腦的神經系統瘋狂募集平時靜態平板撐刺激不到的深層腹橫肌與微小穩定肌群，提供無與倫比的抗伸展與抗側屈整合。',
+      englishName: 'TRX Plank',
+      anatomyFocus: '**主動肌**：核心肌群（腹直肌、腹橫肌、腹內/外斜肌、多裂肌）\n**穩定肌**：前鋸肌（等長主動推地）',
+      mechanics: '**終極核心終結技**：將雙腳懸吊在 TRX 的不穩定表面上。這種微小的晃動會迫使大腦的神經系統瘋狂募集平時靜態平板撐刺激不到的深層腹橫肌與微小穩定肌群，提供無與倫比的抗伸展與抗側屈整合。',
       phases: [
         MovementPhase(
           title: '預備與創造張力階段 (Set-up & Tension Generation)',
@@ -886,6 +908,441 @@ class MovementLibrary {
       ],
       muscleWeights: {
         MuscleGroup.core: 1.0,
+      },
+    ),
+
+    // ─────────────────────── 進階動作庫 ───────────────────────
+    'pallof_press': const MovementData(
+      id: 'pallof_press',
+      name: '帕羅夫推舉',
+      englishName: 'Pallof Press',
+      anatomyFocus: '**主動肌**：腹橫肌、腹內斜肌、腹外斜肌、腰方肌\n**輔助肌**：臀中肌（維持骨盆對稱）、前鋸肌、前三角肌',
+      mechanics: '純粹的**抗旋轉（Anti-Rotation）**功能性訓練。\n\n滑輪或彈力帶從側面施加了一個水平剪力力矩，試圖扭轉你的軀幹。核心肌群必須透過強烈的**等長收縮（Isometric Contraction）**建立動態剛性，守住中線。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '雙腳與肩同寬平行站立，側對滑輪機。雙手扣緊 D 型把手，將把手拉至胸口正中央。\n\n**張力創造**：肋骨下壓，夾緊屁股鎖定骨盆。深吸氣建立高密度**腹內壓（IAP）**。雙腳旋入地面，啟動臀中肌。此時，側向的拉力已經拉開，核心必須在雙手貼胸的狀態下，預先咬住「抗扭轉」的等長張力。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '控制側向拉力，耗時 2–3 秒緩慢將把手沿著中線收回胸前。在此過程中，側向剪力會隨著阻力臂縮短而逐漸減小，但核心絕不能鬆懈，必須維持軀幹絕對靜止，嚴禁肩膀或骨盆向滑輪方向偏轉。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '當把手輕觸胸口正中央的瞬間達到轉換期。此時阻力臂最小，但神經系統必須保持高度警覺。在此死死等長鎖定 0.5 秒，嚴禁含胸或讓把手撞擊胸骨借力，隨即平穩地向外反轉力道。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '核心肌群爆發性發力，雙臂沿著身體正中線，將把手筆直向前推出。**隨著雙手向前延伸，側向拉力的「阻力臂」劇烈拉長，核心所承受的旋轉力矩會呈線性飆升**。撐過雙臂半伸直的黏滯點，全力維持身體幾何中立。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '雙臂在正前方完全伸直鎖定。此時阻力臂達到最大值，側向拉力對中線的破壞力達到頂峰。**在正前方強制進行等長死鎖維持 2 秒鐘**。執行短促的清潔呼吸，維持可樂罐剛性，再進入控制收回。',
+        ),
+      ],
+      coreCues: [
+        '「軀幹化身水泥鋼柱」— 拒絕任何微小扭轉',
+        '「把手死守身體中線」— 確保推舉軌跡不偏斜',
+        '「遠端極限死鎖 2 秒」— 壓榨最高密度的抗旋轉張力',
+      ],
+      muscleWeights: {
+        MuscleGroup.core: 1.0,
+        MuscleGroup.sideDelt: 0.3,
+      },
+    ),
+
+    'pushup_plus': const MovementData(
+      id: 'pushup_plus',
+      name: '進階伏地挺身',
+      englishName: 'Push-Up Plus',
+      anatomyFocus: '**主動肌**：前鋸肌（肩胛骨前引與貼緊胸廓）、胸大肌、前三角肌、肱三頭肌\n**輔助肌**：腹直肌、腹橫肌、股四頭肌（等長平板支撐）',
+      mechanics: '**閉鎖式動力鏈（CKC）**的水平推力優化動作。\n\n相比常規伏地挺身，它在向心頂端增加了一個**肩胛骨極限前引（Scapular Protraction）**的完整行程，能有效活化前鋸肌，專治翼狀肩胛，建立完美的肩胛胸壁關節穩定度。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '雙手略寬於肩撐地，手掌精確位於肩膀正下方，指尖微幅外旋。雙腳併攏，身體呈標準高位平板支撐。\n\n**張力創造**：夾緊屁股、大腿收緊、肋骨下壓，建立完美中線。雙手手掌對地面實施「試圖撕裂地板」的外旋扭矩，將肩胛骨後收下沉，鎖死肩關節盂唇，胸肌與前鋸肌預先繃緊。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '雙肘解鎖，耗時 2–3 秒緩慢下放身體。軀幹維持鋼板剛性，雙肘自然向斜後方彎曲，與軀幹呈 45–60 度夾角。感受胸大肌與前三角肌被體重強行拉長，肩胛骨在後側自然、順暢地向中線靠攏（Retraction）。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '胸口下緣距離地面約 3 公分時達到最低點。此時胸肌拉伸至極限，必須在此維持 0.5 秒的死停暫停，徹底杜絕利用胸腔下塌回彈的舞弊行為。咬住核心，順應肌梭的伸展反射準備反轉。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '胸大肌與三頭肌爆發性向心收縮，手掌全力「壓碎地面」將身體推回。當推到常規伏地挺身的頂端時（雙臂伸直），**動作絕不停止——神經系統持續灌注力量，用意志力驅動雙手再度瘋狂推地，將上背部向天空高高頂起**（執行肩胛骨極限前引）。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '抵達「Plus」的最高點，此時上背部因肩胛骨完全分開而呈現完美的圓弧拱起，前鋸肌達到極限向心收縮。**在最高點死鎖擠壓 1–2 秒**。吐氣，隨後有控制地放鬆前引幅度，重置肩胛下沉，進入下一次控制離心。',
+        ),
+      ],
+      coreCues: [
+        '「手掌壓碎地板，核心繃緊」— 維持鋼鐵平板',
+        '「推舉到頂不停止，繼續推向天空」— 引導 Plus 前引行程',
+        '「把兩片肩胛骨完全分開」— 精準活化前鋸肌意象',
+      ],
+      muscleWeights: {
+        MuscleGroup.chest: 0.7,
+        MuscleGroup.frontDelt: 0.5,
+        MuscleGroup.triceps: 0.5,
+        MuscleGroup.core: 0.3,
+      },
+    ),
+
+    'deadlift': const MovementData(
+      id: 'deadlift',
+      name: '傳統槓鈴硬舉',
+      englishName: 'Conventional Deadlift',
+      anatomyFocus: '**主動肌**：臀大肌、腿後肌群（半腱肌、半膜肌、股二頭長頭）、豎脊肌\n**輔助肌**：背闊肌（等長鎖定槓鈴）、斜方肌、菱形肌、前臂屈肌群',
+      mechanics: '大重量、軸向加載的**髖鉸鏈（Hip Hinge）**王牌動作。\n\n雙腳採取窄站距，槓鈴貼近脛骨，重力線直穿**中足（Mid-foot）**。相比相撲硬舉，傳統硬舉的軀幹前傾角度較大，這拉長了腰椎的水平阻力臂，能產生極高功率的後側鏈神經募集。\n\n> 首下一律由向心階段直接爆發起槓，反覆間遵循以下閉環。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '雙腳約與髖同寬站立，槓鈴精確對齊中足。屈髖、微屈膝下蹲，雙手採取略寬於大腿的外側握距抓緊槓鈴，脛骨主動前傾貼緊槓身。\n\n**張力創造**：挺胸、展肩，雙肘微微內夾，執行「把槓鈴折彎並拉斷」的神經意象，瞬間拉緊配重線並瘋狂啟動背闊肌，將槓鈴死死鎖在脛骨上。深吸氣，360 度撐滿腹內壓，脊椎解耦中立。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '頂端鎖定後，雙膝微解鎖，隨即主動折髖**將屁股向正後方的牆面推動**。槓鈴宛如剃刀般死死貼著大腿皮膚垂直下放。當槓鈴抗阻下降滑過膝蓋高度的瞬間，膝關節才順勢彎曲，引導槓片平穩、垂直地降落至地面。下放耗時 2 秒，嚴禁直接自由落體砸地。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '槓片輕觸地面的瞬間（Touch-and-Go）或死重靜止狀態。此時腰椎剪力達到最高峰。你必須死死扣住腹內壓與背闊肌張力，**結構嚴禁含胸龜背或讓骨盆產生前傾/後傾的微小晃動**。利用神經系統的瞬時剛性，將重力減速轉化為蹬地向心力。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '神經全面起爆。**發力意象絕非「用腰把槓鈴拉起來」，而是「用雙腿把地板死命踩穿」**（Leg Drive）。股四頭肌首先收縮驅動起槓；當槓鈴推進過膝、滑動至大腿中段的黏滯點時，臀大肌與腿後肌群強烈收縮接管，將骨盆強勢向前推動伸髖，完成力的傳導。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '身體完全站直，雙膝、雙髖完全伸直。臀大肌強力收縮鎖死骨盆。\n\n> **嚴禁**為了追求鎖定而將胸椎與腰椎向後過度凹背（Hyperextension）。\n\n在頂端挺胸，執行清潔呼吸重新 Bracing，拉緊背闊肌貨架，準備迎戰下一把。',
+        ),
+      ],
+      coreCues: [
+        '「拉緊配重線，背闊肌鎖死」— 起槓前張力傳導',
+        '「用雙腿踩穿地板」— 由腿主導起槓，保護下背',
+        '「槓鈴貼死大腿，屁股前推」— 過膝後強烈伸髖鎖定',
+      ],
+      muscleWeights: {
+        MuscleGroup.posteriorChain: 1.0,
+        MuscleGroup.back: 0.5,
+        MuscleGroup.quads: 0.3,
+      },
+    ),
+
+    'sumo_deadlift': const MovementData(
+      id: 'sumo_deadlift',
+      name: '相撲硬舉',
+      englishName: 'Sumo Deadlift',
+      anatomyFocus: '**主動肌**：股四頭肌、臀大肌、大收肌（內收肌群特化）\n**輔助肌**：豎脊肌（相較傳統硬舉，負擔大幅減輕）、斜方肌、核心肌群',
+      mechanics: '超寬站距的下肢推拉複合動作。\n\n由於雙腿大幅度外展與外旋，**極大地縮短了軀幹與槓鈴重力線之間的水平阻力臂**。這允許軀幹在起槓時維持極度直立，將腰椎剪力降至最低，轉而極度壓榨股四頭肌與大內收肌群的剪切輸出。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '採取超寬站距（腳掌貼近槓片），雙腳尖強烈朝外旋轉約 45 度以上。骨盆垂直下沉，雙臂在雙腿內側垂直下垂，採取對稱抓握。\n\n**張力創造**：挺胸，主動將**骨盆與腹股溝極度向前貼近槓鈴**。雙膝強力向外推，使其幾何軌跡與腳尖完全對齊。雙手拉緊配重線，收緊闊背肌。深吸氣撐爆腹內壓，在起槓前創造一個「將身體塞進槓鈴下方」的極限張力。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '頂端鎖定後，維持軀幹近乎垂直於地面的幾何角度。控制骨盆垂直向下坐落，**雙膝在下降過程中必須持續主動向兩側外推**，確保槓鈴沿著絕對筆直的垂線貼身放回地面。下放耗時 2 秒，嚴禁屁股先往後翹。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '槓片輕觸地面的盲區。由於相撲硬舉底部行程極短且力學幾何極其敏感，此處只要骨盆微幅向後漂移，力臂就會崩潰。你必須在觸地瞬間維持骨盆極度貼槓的幾何位置，咬死腹內壓，神經系統瞬間反轉力道。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '神經意象起爆：**「雙腳掌向左右兩側死命推開地面」**。股四頭肌與內收肌群產生排山倒海的向心收縮，將重量蹬離地面。由於相撲硬舉的黏滯點就在「離地前 5 公分」，只要槓鈴離地，立即將臀大肌水平向前「塞進（Wedging）」槓鈴正下方，完成鎖定。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '雙膝、雙髖完全伸直，身體呈絕對垂直的一線幾何。臀肌與內收肌同步鎖死。在頂端挺胸，執行一次清潔呼吸，重新微調雙膝外推的扭矩，維持剛性外殼準備下一把。',
+        ),
+      ],
+      coreCues: [
+        '「將身體強行塞進槓鈴下」— 起槓前極大化貼槓幾何',
+        '「雙腳向兩側推開地板」— 起槓時活化四頭與內收肌',
+        '「骨盆水平塞進槓鈴」— 離地後瞬間伸髖鎖定',
+      ],
+      muscleWeights: {
+        MuscleGroup.quads: 1.0,
+        MuscleGroup.posteriorChain: 0.7,
+        MuscleGroup.back: 0.3,
+      },
+    ),
+
+    'cossack_squat': const MovementData(
+      id: 'cossack_squat',
+      name: '哥薩克蹲',
+      englishName: 'Cossack Squat',
+      anatomyFocus: '**主動肌（支撐側）**：股四頭肌、臀大肌、臀中肌（單側骨盆等長剛性穩定）\n**特化肌（延伸側）**：大收肌、長收肌（極限拉長狀態下抗阻）、腿後肌群',
+      mechanics: '多維度（額狀面與矢狀面交織）的進階單側深蹲。\n\n它融合了單側下肢的超大行程深蹲，與對側直腿肌群的**拉長狀態下阻抗（Stretch-mediated resistance）**。這對支撐側的踝關節背屈能力、骨盆三維抗傾斜能力提出了骨灰級的生物力學要求。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '雙手可在胸前抱拳（或持壺鈴做前載荷）。採取超寬站距（約 2 至 2.5 倍肩寬），雙腳掌預設平行朝前（或微朝外）。\n\n**張力創造**：收腹挺胸，肋骨下壓，深吸氣建立腹內壓。將身體軸心穩定在中央，雙側核心與臀肌預先緊繃，建立對抗單側橫向移動的剛性地基。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '將身體重心向單側（支撐側）橫向橫移，隨即支撐側屈髖、屈膝控制下蹲（耗時 3 秒）。與此同時，**延伸側（直腿側）必須保持絕對伸直，且延伸側的腳尖必須主動向天空翻轉旋出**（以腳跟為軸心旋轉）。感受延伸側大腿內側內收肌群被瘋狂拉扯、撕裂的離心機械張力。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '當支撐側大腿深蹲至低於平行線、延伸側內收肌達到極限拉伸點時，達到最低轉換期。此時單側骨盆極易發生傾斜或扭轉。你必須將支撐側足底三角釘死地面，核心側向抗屈曲拉滿，**在此強制死停 0.5 秒消除動能**，準備橫向向心反轉。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '支撐側全腳掌爆發性向下「踩碎地面」，股四頭肌的主動膝伸與臀大肌的強烈伸髖共同起爆。大腦發力意象為「沿著斜向弧線將地板推離身體」。將重心垂直且橫向推回中線，延伸側直腿順勢收回腳掌平貼地面。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '身體回到最初的超寬站距垂直中立位，雙腿完全伸直，骨盆回歸正中央。在此重啟一次大口呼吸，重新校準橫向核心剛性，宣告下一次反覆（向另一側或同側執行）。',
+        ),
+      ],
+      coreCues: [
+        '「直腿側腳尖轉向天空」— 解剖學解鎖髖關節，極限拉伸內收肌',
+        '「支撐側足底釘死，垂直下蹲」— 確保單側四頭與臀肌吃重',
+        '「用單腿踩碎地板推回中線」— 專注單側向心驅動意象',
+      ],
+      muscleWeights: {
+        MuscleGroup.quads: 0.8,
+        MuscleGroup.posteriorChain: 0.5,
+      },
+    ),
+
+    'single_arm_row': const MovementData(
+      id: 'single_arm_row',
+      name: '單臂啞鈴划船',
+      englishName: 'Single-Arm DB Row',
+      anatomyFocus: '**主動肌**：背闊肌、大圓肌、後三角肌、菱形肌、中下斜方肌\n**輔助肌**：肱二頭肌、前臂屈肌群（抓握）、核心肌群（抗旋轉）',
+      mechanics: '**單側水平拉力**的開放式動力鏈（OKC）動作。\n\n由於是單側負重，啞鈴的重力會對脊椎產生強烈的旋轉力矩，迫使核心肌群必須進行高強度的**抗旋轉（Anti-Rotation）**等長收縮以維持骨盆與胸廓的水平。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '雙腳採取弓步站姿（或單膝、單手撐在臥推椅上）。非工作側手掌死死撐住支撐面，鎖死肩胛骨。工作側軀幹平行於地面，手持啞鈴自然下垂。\n\n**張力創造**：下壓肋骨、收緊腹部，執行中線穩定。工作側肩胛骨主動下沉、遠離耳朵（啟動背闊肌）。雙腳與支撐手三點建立剛性地基，全面抗衡啞鈴試圖扭轉軀幹的剪力。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '控制啞鈴的重力，耗時 2–3 秒緩慢、抗阻地下放。允許肩胛骨在最底部自然前引（Protraction），感受背闊肌外側與大圓肌被完全拉長、撕裂的機械張力。過程中軀幹如鋼板般維持水平，嚴禁骨盆向側邊歪斜。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '啞鈴降至最底部、背肌達到極限預拉伸的盲區。此時核心的抗旋轉張力達到最高峰。必須在此維持 0.5 秒死停，徹底抹殺任何身體晃動的動能，順應肌梭的伸展反射，準備向心起爆。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '背部肌群向心全力起爆。**發力意象絕非「垂直向上提拉啞鈴」，而是「用工作側手肘劃出一道弧線，猛烈撞擊後方的髖關節」**。這能極大化背闊肌的伸髖功能，減少二頭肌代償。通過中段黏滯點時，肩胛骨向中線強力收攏（Retraction）。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '啞鈴手柄貼近肋骨側邊，手肘高度超越軀幹。此時中下斜方肌與菱形肌極限收縮，上背完全夾緊。**在頂端實施頂峰收縮鎖定 1 秒鐘**。保持呼氣，維持骨盆水平對稱，隨後平穩進入下一次控制離心。',
+        ),
+      ],
+      coreCues: [
+        '「撐緊地基，身體拒絕搖晃」— 鎖定抗旋轉核心',
+        '「手肘滑向屁股」— 用背主導弧線軌跡，摒除手臂代償',
+        '「頂端捏緊肩胛骨」— 壓榨中背厚度的向心極限',
+      ],
+      muscleWeights: {
+        MuscleGroup.back: 1.0,
+        MuscleGroup.biceps: 0.5,
+        MuscleGroup.core: 0.3,
+      },
+    ),
+
+    'turkish_getup': const MovementData(
+      id: 'turkish_getup',
+      name: '土耳其起立',
+      englishName: 'Turkish Get-Up',
+      anatomyFocus: '**主動肌**：旋轉肌群（岡上/岡下/小圓/肩胛下肌，極致等長穩定）、三角肌\n**輔助肌**：核心肌群（腹直/腹橫/斜肌/腰方肌，360 度多維度穩定）、臀大肌、股四頭肌',
+      mechanics: '跨越三維空間（矢狀面、額狀面、水平面）的高階多關節功能性整合動作。\n\n要求負重臂在身體經歷「躺臥、側滾、撐地、高橋、穿腿、弓步、站立」的動態軌跡中，幾何重力線必須**永遠垂直穿過肩、肘、腕關節並對齊中足**，對肩關節盂唇提出骨灰級的動態鎖定要求。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '呈側臥胎兒姿，雙手將壺鈴抱至胸前，隨後翻轉仰臥。工作側單臂將壺鈴垂直推向天空，肘關節死鎖。工作側膝蓋彎曲、腳掌踩實地面；非工作側手臂與下肢向外張開 45 度平貼地面。\n\n**張力創造**：執行**「肩關節打包（Pack the shoulder）」**，想像將肱骨頭死死吸入肩關節囊深處，背闊肌與前鋸肌同步咬住張力。深吸氣撐滿腹內壓，雙眼死死盯住壺鈴，建立全身剛性貨架。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '從站姿開始，控制重力緩慢向後跨出弓步、膝蓋著地；隨後軀幹側屈，非工作側手掌精確尋找地面平貼。在此離心過程中，核心與臀肌承受多維度的抗阻拉長，負重臂必須像一根不變形的鋼柱，死死抵抗試圖拉偏重心的拉力。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '發生在動作的核心過渡期（如：由高橋架準備穿腿的瞬間，或躺臥準備側滾起身的盲區）。此時身體的支撐幾何大範圍改變，關節受力力臂達到最不穩定的臨界點。你必須在各個節點死死停頓 0.5 秒，校準重力線，嚴禁任何一處關節解耦鬆榻。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '身體全面性向心驅動。工作側足底蹬地，側滾起身上身至手肘、隨後撐起至手掌；臀部強力抬高（高橋架），將非工作側腿流暢地向後「穿過」並跪地改呈弓步平衡，最終雙腿蹬地挺身站立。整個過程中，**上肢神經系統唯一任務是「持續向天空出拳」**，維持荷載垂直。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '身體完全站直，雙腳併攏，壺鈴重力線經由筆直的手臂直穿足底中央。此時由骨骼幾何完美鎖定承重。在頂端執行一次高質量的清潔呼吸，將神經系統、血壓與核心剛性重新 Reset，準備進入下一反向離心階段。',
+        ),
+      ],
+      coreCues: [
+        '「眼神死盯壺鈴」— 維持神經中樞本體感覺回饋',
+        '「把肩膀往地裡壓 / 向天空出拳」— 極致鎖定肩盂唇',
+        '「在每個節點按暫停鍵」— 確保幾何結構穩固，嚴禁盲目連貫',
+      ],
+      muscleWeights: {
+        MuscleGroup.frontDelt: 0.7,
+        MuscleGroup.core: 0.8,
+        MuscleGroup.posteriorChain: 0.3,
+      },
+    ),
+
+    'hip_thrust': const MovementData(
+      id: 'hip_thrust',
+      name: '槓鈴臀推',
+      englishName: 'Barbell Hip Thrust',
+      anatomyFocus: '**主動肌**：臀大肌（頂峰極限縮短特化）、大收肌\n**輔助肌**：腿後肌群、股四頭肌、豎脊肌（等長剛性穩定）',
+      mechanics: '水平加載的純粹**髖伸（Hip Extension）**動作。\n\n與深蹲、硬舉不同，臀推的阻力方向垂直於軀幹，這徹底消除了腰椎的軸向剪力。力學甜蜜點落在**髖關節完全伸直的「極限縮短位置」**，此時臀大肌的機械張力與運動單元招募達到絕對的最大值。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '上背部（肩胛骨下緣邊沿）橫靠在臥推椅上。槓鈴加裝厚護墊，精確滾動安放在骨盆腹股溝處。雙腳平貼地面，站距約與肩同寬，腳尖自然朝外 15–30 度。\n\n**張力創造**：雙手抓穩槓鈴。執行「下巴死死收緊（鎖定下巴）」，雙眼直視前方。深吸氣撐起巨大的腹內壓。雙腳掌施加外旋扭矩，臀肌在動作發生前預先進入 100% 緊繃抗阻狀態。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '控制槓鈴重力，耗時 2–3 秒緩慢下放骨盆。**核心最關鍵力學：你的脊椎與骨盆必須結合為一塊鋼板，以臥推椅邊緣為唯一軸心整體旋轉下降**。嚴禁透過凹下背（腰椎過度伸展/屈曲）來下放重量。雙眼始終死死盯著前方牆面，嚴禁頭部隨身體後仰看天花板。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '當骨盆降至接近地面、臀大肌被拉伸至盲區時達到最低點。配重片嚴禁完全著地卸力。在此咬住核心剛性，輕柔暫停 0.5 秒。此時臀肌的腱梭感應到拉伸，順應強烈伸展反射，神經系統瞬間反轉力道。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '臀大肌全面性暴烈起爆。**發力意象為「用你的雙腳跟，死命把地球踩穿」**（Leg Drive）。由下肢反作用力驅動骨盆沿著弧線垂直向上推舉。通過中段黏滯點時，維持下巴收緊、雙眼看前方，強迫力量純粹由骨盆後傾與髖伸主導，嚴禁利用腰椎凹背借力。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '骨盆推至最高點，小腿在幾何上與地面呈絕對的 90 度垂直，軀幹與大腿呈水平 tabletop（桌面）。**此時執行強烈的「骨盆後傾（Posterior Pelvic Tilt, PPT）」**，將臀大肌像捏碎硬幣一樣死死擠壓鎖定 1–2 秒鐘。吐氣，重新 Bracing 核心，準備下一次重複。',
+        ),
+      ],
+      coreCues: [
+        '「盯著前方，收緊下巴」— 死鎖頸椎與腰椎，根除下背代償',
+        '「用腳跟踩穿地面」— 激活最強下肢伸髖動力鏈',
+        '「頂端夾緊屁股，做一張水平桌子」— PPT 極限鎖定，壓榨臀肌縮短位',
+      ],
+      muscleWeights: {
+        MuscleGroup.posteriorChain: 1.0,
+      },
+    ),
+
+    'hanging_leg_raise': const MovementData(
+      id: 'hanging_leg_raise',
+      name: '懸垂舉腿',
+      englishName: 'Hanging Leg Raise',
+      anatomyFocus: '**主動肌**：腹直肌、腹外斜肌、腹內斜肌、髂腰肌（髖屈肌群）\n**輔助肌**：股直肌、前臂屈肌群（等長抓握）',
+      mechanics: '開放式動力鏈的下腹部核心特化動作。\n\n許多人在此動作中僅執行了「髖關節屈曲」，導致髂腰肌過度代償而下背酸痛。生物力學上，必須實現**「骨盆後傾與脊椎屈曲（骨盆向胸口捲動）」**，才能真正讓腹直肌下部產生高張力的向心縮短。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '雙手正握懸掛於單槓上。執行**主動懸掛（Active Hang）**：雙肩下沉、遠離耳朵，活化前鋸肌與下斜方肌。雙腿併攏伸直。\n\n**張力創造**：夾緊臀部、大腿繃緊，**將雙腿稍微置於身體垂直線的前方約 5–10 度**。這能預先讓前側核心咬住等長張力，徹底切斷身體因地心引力產生前後晃動（鐘擺效應）的力學底座。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '控制雙腿自重，耗時 2–3 秒極其緩慢地放回起始位。腹直肌與核心肌群在此時承受高密度的離心抗阻拉長。你必須用核心死死踩住剎車，嚴禁雙腿直接摔落，否則產生的動能會引發災難性的身體晃動。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '當雙腿回到預設的前傾 5 度起點時達到過渡期。**此處是阻斷鐘擺效應的「生死臨界點」**。你必須在此強制停頓 1 秒鐘，將身體的任何晃動動能完全降為零，咬住腹肌底部的緊繃張力，準備純淨起爆。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '腹式核心神經全面起爆。**發力意象絕非「把腳抬起來」，而是「努力將你的恥骨（骨盆底部）向上捲動，去撞擊你的肋骨下緣」**。隨著膝蓋/足尖上推，強烈命令骨盆產生大角度的後傾捲動，逼迫腹直肌下部在極端縮短位瘋狂收縮。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '雙腿（或雙膝）高高舉起，骨盆完全離開身體垂直中立面並向上翻轉，腹肌完全揉縮擠壓。**在最高點實施頂峰死鎖 0.5–1 秒鐘**。將肺部空氣完全吐盡（極大化腹橫肌壓縮），隨後平穩進入控制離心。',
+        ),
+      ],
+      coreCues: [
+        '「肩膀遠離耳朵，雙腿微微前傾」— 封鎖鐘擺回彈的根基',
+        '「把骨盆捲向胸口」— 用腹肌捲骨盆，切斷髂腰肌代償',
+        '「頂端吐盡空氣，死停 1 秒」— 壓榨核心極限張力',
+      ],
+      muscleWeights: {
+        MuscleGroup.core: 1.0,
+      },
+    ),
+
+    'landmine_press': const MovementData(
+      id: 'landmine_press',
+      name: '單臂地雷管斜推',
+      englishName: 'Single-Arm Landmine Press',
+      anatomyFocus: '**主動肌**：胸大肌鎖骨頭（上胸）、三角肌前束、前鋸肌（頂端肩胛骨上旋與前引）\n**輔助肌**：肱三頭肌、對側腹斜肌群（抗側屈等長穩定）',
+      mechanics: '單側站姿（或半跪姿）的**非線性軌跡推力動作**。\n\n地雷管的固定軸創造了一條「介於水平推與垂直推之間」的斜向幾何弧線，允許肩胛骨在完美的**肩胛骨平面（Scapular Plane）**內自然滑動，對肩峰下空間極其友善。單側加載同時對對側核心提出了極高的**抗側屈（Anti-Lateral Flexion）**張力要求。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '站姿（雙腳平行或弓步）或半跪姿。單手抓緊槓鈴袖口末端，將槓鈴頂端架設在工作側肩膀前側前方。非工作手握拳垂於身側或叉腰。\n\n**張力創造**：夾緊臀部、收緊腹部，執行中線穩定。**對側的腹內外斜肌與腰方肌強力繃緊**，死死抗衡槓鈴試圖將你軀幹向工作側拉塌的側向力矩。前臂與地雷管角度保持力學垂直，前束預先咬住張力。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '控制槓鈴沿著其固定的幾何弧線控制下放（耗時 2–3 秒）。手肘自然向斜前方內夾，與軀幹呈約 30–45 度夾角（肩胛平面）。感受上胸、前三角肌與三頭肌承受抗阻拉長的機械張力。軀幹如雕像般僵直，嚴禁向工作側歪斜。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '槓鈴降至接近上肩前側的力學甜蜜點。此時胸前帶與對側核心的抗阻剪力達到最高峰。在此實施「輕柔暫停」0.5 秒。死死咬住上背與核心，嚴禁槓鈴撞擊身體借力，順應伸展反射準備反轉。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '上胸與三角肌前束向心爆發起爆。足底死踩地面，**發力意象為「沿著地雷管的弧線，將槓鈴向斜前方狠狠推碎」**。當推至路徑中段黏滯點時，維持軀幹中立，嚴禁透過身體轉動或側彎來作弊借力，純粹由上肢與肩胛動力鏈驅動。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '手臂完全伸直。**核心力學終點：主動將肩膀向前、向上送出（執行肩胛骨的前引與上旋 Scapular Protraction/Upward Rotation）**。這能給予前鋸肌極限收縮，並徹底釋放肩關節壓力。在頂端「leaning into the bar（身體微幅順勢前傾頂鎖）」1 秒。均勻呼吸，重新 Reset 核心。',
+        ),
+      ],
+      coreCues: [
+        '「對側核心繃緊，身體化身雕像」— 封鎖側彎代償',
+        '「手肘朝斜前方自然下放」— 死守肩胛平面，保護盂唇',
+        '「推到頂端，向斜前方全力出拳」— 活化前鋸肌，極限鎖定',
+      ],
+      muscleWeights: {
+        MuscleGroup.chest: 0.7,
+        MuscleGroup.frontDelt: 0.8,
+        MuscleGroup.triceps: 0.3,
+        MuscleGroup.core: 0.3,
+      },
+    ),
+
+    'reverse_sled': const MovementData(
+      id: 'reverse_sled',
+      name: '倒退負重雪橇',
+      englishName: 'Reverse Sled Drag',
+      anatomyFocus: '**主動肌**：股四頭肌（特化股內側肌 VMO）、臀大肌\n**輔助肌**：小腿肌肉群、核心肌群（中軸等長姿態穩定）',
+      mechanics: '**純向心收縮（Concentric-Dominant）**的功能性與體能整合動作。\n\n由於是倒退行走，每次跨步都由腳尖著地過渡到腳跟，並在末端執行極高強度的**膝關節完全伸直鎖定（Terminal Knee Extension, TKE）**。此動作完全沒有離心階段，因此造成的肌肉微剪切損傷與延遲性肌肉酸痛（DOMS）極低，是打造鋼鐵膝關節與四頭肌耐力的神級動作。',
+      phases: [
+        MovementPhase(
+          title: '預備與創造張力階段 (Set-up & Tension Generation)',
+          content: '面對雪橇，雙手抓緊韁繩把手（或將腰帶扣鎖於骨盆）。身體向後傾斜（約 15–30 度），將體重作為槓桿拉緊韁繩，配重線張力瞬間拉滿。\n\n**張力創造**：雙膝微彎，下壓肋骨，核心鎖死。大腦發力意象為「建立一個絕對不會被拉散的鋼鐵骨架」，上背斜方肌與核心等長收縮，股四頭肌預先咬住極高密度的等長張力。',
+        ),
+        MovementPhase(
+          title: '離心收縮階段 / 下放 (Eccentric Phase)',
+          content: '當你向後邁出單腳，**足尖（前腳掌）首先擊向地面承重**。此時，雖然動作整體是向心主導，但在足尖著地的瞬間，該側股四頭肌必須進行極其短暫、微幅的離心抗阻「剎車」，去承接雪橇向前拉扯你軀幹的動量。下肢關節維持在抗阻彈性狀態。',
+        ),
+        MovementPhase(
+          title: '最低點轉換期 / 減速與反轉 (Amortization Phase)',
+          content: '發生在**前腳掌完全踩實地面、而腳跟即將壓實的瞬時盲區**。此時單腿由「承接衝擊」瞬間切換為「發力推進」。你必須維持骨盆高度不晃動，足底三角釘死，神經系統以最快速度完成方向反轉，杜絕任何張力洩漏。',
+        ),
+        MovementPhase(
+          title: '向心收縮階段 / 推起 (Concentric Phase)',
+          content: '該側股四頭肌全面性向心暴烈起爆。**發力意象為「用你的前腳掌，死命把地球向前、向遠處推開」**。強力伸膝，驅動整個身體與骨盆平穩、強勢地向後橫移，拉動超重雪橇。力量經由繃緊的剛性軀幹無損傳導至韁繩。',
+        ),
+        MovementPhase(
+          title: '鎖定與恢復階段 (Lockout & Reset)',
+          content: '步態的末端：**膝關節達到完全的伸直鎖定（TKE）**。此時，負責穩定髕骨骨骼幾何的**股內側肌（VMO）**達到極限向心收縮。在單步鎖定頂端擠壓四頭肌 0.1 秒，隨後對側腳順勢向後邁出，重啟下一次預備張力與步態循環。',
+        ),
+      ],
+      coreCues: [
+        '「重心後傾，拉緊生命線」— 利用體重槓桿，嚴禁含胸',
+        '「用足尖抓地，把地球向前推走」— 激活最強四頭肌向心動力鏈',
+        '「每一步，膝蓋完全伸直鎖死」— 精準轟炸 VMO，強化膝關節剛性',
+      ],
+      muscleWeights: {
+        MuscleGroup.quads: 1.0,
       },
     ),
   };
